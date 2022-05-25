@@ -16,12 +16,12 @@ See also: https://git.sr.ht/~noneucat/nur-packages
     libinput.enable = true;
     desktopManager.swmo.enable = true;
 
-    displayManager {
+    displayManager = {
       lightdm.enable = true;
       autoLogin.enable = true;
       autoLogin.user = "[your_user]";
       defaultSession = "swmo";
-    }
+    };
   };
 
 ```
