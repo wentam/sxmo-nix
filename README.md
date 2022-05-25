@@ -9,7 +9,8 @@ See also: https://git.sr.ht/~noneucat/nur-packages
 ```nix
 {
   imports = [
-    ./sxmo-nix/modules/swmo # Or wherever it's located
+    ./sxmo-nix/modules/swmo #
+    ./sxmo-nix/modules/sxmo # Or wherever it's located
   ];
 
   services.xserver = {
