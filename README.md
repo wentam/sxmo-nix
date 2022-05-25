@@ -6,7 +6,8 @@ See also: https://git.sr.ht/~noneucat/nur-packages
 
 # Usage
 
-```
+```nix
+{
   imports = [
     ./sxmo-nix/modules/swmo # Or wherever it's located
   ];
@@ -23,5 +24,5 @@ See also: https://git.sr.ht/~noneucat/nur-packages
       defaultSession = "swmo";
     };
   };
-
+}
 ```
