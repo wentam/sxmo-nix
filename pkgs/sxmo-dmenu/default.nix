@@ -11,7 +11,7 @@
   };
 
   meta = with lib; {
-    description = "";
+    description = "Dmenu for sxmo";
     homepage = "https://git.sr.ht/~mil/sxmo-dmenu";
     license = licenses.mit;
     platforms = platforms.linux;
