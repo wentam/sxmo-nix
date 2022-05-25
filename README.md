@@ -15,13 +15,14 @@ See also: https://git.sr.ht/~noneucat/nur-packages
   services.xserver = {
     enable = true;
     libinput.enable = true;
-    desktopManager.swmo.enable = true;
+    desktopManager.swmo.enable = true; # Wayland
+    desktopManager.sxmo.enable = true; # X11
 
     displayManager = {
       lightdm.enable = true;
       autoLogin.enable = true;
       autoLogin.user = "[your_user]";
-      defaultSession = "swmo";
+      defaultSession = "swmo"; # Or sxmo for X session
     };
   };
 }
