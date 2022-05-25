@@ -2,12 +2,12 @@
 
 let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
-  sxmoutils = (sxmopkgs.sxmo-utils.overrideAttrs (oldAttrs: rec { passthru.providedSessions = [ "swmo" ]; }));
+  sxmoutils = (sxmopkgs.sxmo-utils.overrideAttrs (oldAttrs: rec { passthru.providedSessions = [ "sxmo" ]; }));
 in
 {
   imports = [];
   options = {
-    services.xserver.desktopManager.swmo = {
+    services.xserver.desktopManager.sxmo = {
       enable = lib.mkOption {
         type = lib.types.bool;
         default = false;
@@ -16,7 +16,7 @@ in
     };
  };
 
- config = lib.mkIf config.services.xserver.desktopManager.swmo.enable {
+ config = lib.mkIf config.services.xserver.desktopManager.sxmo.enable {
    environment.systemPackages = with pkgs; [
      sxmoutils
      sxmopkgs.sxmo-dwm
@@ -36,15 +36,6 @@ in
 
    fonts.fonts = [ pkgs.nerdfonts ];
 
-   programs.sway = {
-     enable = true;
-     wrapperFeatures.gtk = true; # so that gtk works properly
-     extraPackages = with pkgs; [];
-   };
-
-   # Set default sway config to the sxmo template
-   environment.etc."sway/config".source = "${sxmopkgs.sxmo-utils}/share/sxmo/appcfg/sway_template";
-
    # $TERMCMD used by the sxmo sway template config
    environment.variables.TERMCMD = "st";
 
@@ -58,6 +49,6 @@ in
    services.udev.packages = [ sxmoutils ];
 
    # Define session
-   services.xserver.displayManager.sessionPackages = [ sxmoutils ];
+   services.xserver.displayManager.sessionPackages = [ sxmoutils  ];
  };
 }
