@@ -6,4 +6,5 @@ rec {
   overlays = import ./overlays; # nixpkgs overlays
 
   sxmo-utils = pkgs.callPackage ./pkgs/sxmo-utils {};
+  sxmo-dwm   = pkgs.callPackage ./pkgs/sxmo-dwm {};
 }
