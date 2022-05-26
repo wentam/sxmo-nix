@@ -9,18 +9,18 @@ See also: https://git.sr.ht/~noneucat/nur-packages
 ```nix
 {
   imports = [
-    ./sxmo-nix/modules/swmo #
-    ./sxmo-nix/modules/sxmo # Or wherever it's located
+    ./sxmo-nix/modules/swmo   #
+    ./sxmo-nix/modules/sxmo   #
+    ./sxmo-nix/modules/tinydm # Or wherever they're located
   ];
 
   services.xserver = {
     enable = true;
-    libinput.enable = true;
     desktopManager.swmo.enable = true; # Wayland
     desktopManager.sxmo.enable = true; # X11
 
     displayManager = {
-      lightdm.enable = true;
+      tinydm.enable = true;
       autoLogin.enable = true;
       autoLogin.user = "[your_user]";
       defaultSession = "swmo"; # Or sxmo for X session
