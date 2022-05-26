@@ -50,6 +50,9 @@ in
    # Install udev rules
    services.udev.packages = [ sxmoutils ];
 
+   services.xserver.tty = null;
+   services.xserver.display = null;
+
    # Define session
    services.xserver.displayManager.sessionPackages = [ sxmoutils  ];
  };

@@ -10,7 +10,7 @@ let
      export TINYDM_XSESSION_PATH="${dmcfg.sessionData.desktops}/share/xsessions/"
      export TINYDM_X11_PROFILE_PATH="/var/empty/"
      export TINYDM_WAYLAND_PROFILE_PATH="/var/empty/"
-     ${sxmopkgs.tinydm}/bin/tinydm-run-session
+     exec ${sxmopkgs.tinydm}/bin/tinydm-run-session
   '';
   xsession_path = "${dmcfg.sessionData.desktops}/share/xsessions/";
   wsession_path = "${dmcfg.sessionData.desktops}/share/wayland-sessions/";
@@ -76,6 +76,9 @@ in
      fi
    '';
 
+   # tinydm uses startx for X sessions
+   services.xserver.displayManager.startx.enable = true;
+
    # Set up environment for our (patched) tinydm
    /*services.xserver.displayManager.job.environment = {
      TINYDM_WAYLAND_SESSION_PATH = "${dmcfg.sessionData.desktops}/share/wayland-sessions/";
@@ -88,9 +91,7 @@ in
    systemd.services.display-manager.conflicts = [ "getty@tty1.service" ];
 
    services.xserver.displayManager.job.execCmd = ''
-     ${sxmopkgs.autologin}/bin/autologin ${dmcfg.autoLogin.user} /run/current-system/sw/bin/sh ${tinydm-run}
+     exec ${sxmopkgs.autologin}/bin/autologin ${dmcfg.autoLogin.user} /run/current-system/sw/bin/sh ${tinydm-run}
    '';
-      #export PATH=${sxmopkgs.tinydm}/bin:$PATH
-
  };
 }
