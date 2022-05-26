@@ -12,6 +12,8 @@ let
      export TINYDM_WAYLAND_PROFILE_PATH="/var/empty/"
      ${sxmopkgs.tinydm}/bin/tinydm-run-session
   '';
+  xsession_path = "${dmcfg.sessionData.desktops}/share/xsessions/";
+  wsession_path = "${dmcfg.sessionData.desktops}/share/wayland-sessions/";
 in
 {
   imports = [
@@ -64,8 +66,14 @@ in
    environment.systemPackages = [ sxmopkgs.tinydm ];
 
    # Set default session
-   services.xserver.displayManager.job.preStart = optionalString (!dmcfg.autoLogin.enable && dmcfg.defaultSession != null) ''
-      ${sxmopkgs.tinydm}/bin/tinydm-set-session -f -s ${dmcfg.defaultSession}
+   services.xserver.displayManager.job.preStart = ''
+     if [ -e ${xsession_path}/${dmcfg.defaultSession}.desktop ]; then
+       ${sxmopkgs.tinydm}/bin/tinydm-set-session -f -s ${xsession_path}/${dmcfg.defaultSession}.desktop
+     fi
+
+     if [ -e ${wsession_path}/${dmcfg.defaultSession}.desktop ]; then
+       ${sxmopkgs.tinydm}/bin/tinydm-set-session -f -s ${wsession_path}/${dmcfg.defaultSession}.desktop
+     fi
    '';
 
    # Set up environment for our (patched) tinydm
