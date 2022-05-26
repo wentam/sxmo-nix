@@ -11,4 +11,5 @@ rec {
   sxmo-dmenu = pkgs.callPackage ./pkgs/sxmo-dmenu {};
   superd     = pkgs.callPackage ./pkgs/superd {};
   tinydm     = pkgs.callPackage ./pkgs/tinydm {};
+  autologin  = pkgs.callPackage ./pkgs/autologin {};
 }

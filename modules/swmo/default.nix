@@ -42,6 +42,9 @@ in
    # Set default sway config to the sxmo template
    environment.etc."sway/config".source = "${sxmopkgs.sxmo-utils}/share/sxmo/appcfg/sway_template";
 
+  # TODO: hack to get sxmo to find it's hooks/superd services
+  environment.pathsToLink = [ "/share" ];
+
    # $TERMCMD used by the sxmo sway template config
    environment.variables.TERMCMD = "st";
 

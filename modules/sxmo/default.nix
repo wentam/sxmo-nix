@@ -29,9 +29,13 @@ in
      inotify-tools
      pn
      gojq
+     xdotool
    ];
 
    fonts.fonts = [ pkgs.nerdfonts ];
+
+  # TODO: hack to get sxmo to find it's hooks/superd services
+  environment.pathsToLink = [ "/share" ];
 
    environment.variables.TERMCMD = "st"; # TODO: does X11 sxmo use this var?
 
