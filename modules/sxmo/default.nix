@@ -23,21 +23,17 @@ in
      sxmopkgs.sxmo-st
      sxmopkgs.sxmo-dmenu
      sxmopkgs.superd
-     sway
      busybox
-     bemenu
      lisgd
      svkbd
      inotify-tools
      pn
-     wvkbd
      gojq
    ];
 
    fonts.fonts = [ pkgs.nerdfonts ];
 
-   # $TERMCMD used by the sxmo sway template config
-   environment.variables.TERMCMD = "st";
+   environment.variables.TERMCMD = "st"; # TODO: does X11 sxmo use this var?
 
    # Power button shouldn't immediately power off the device
    # TODO: This change could apply to other sessions. It'd better find a way to do this at session start.

@@ -19,15 +19,12 @@ in
  config = lib.mkIf config.services.xserver.desktopManager.swmo.enable {
    environment.systemPackages = with pkgs; [
      sxmoutils
-     sxmopkgs.sxmo-dwm
      sxmopkgs.sxmo-st
-     sxmopkgs.sxmo-dmenu
      sxmopkgs.superd
      sway
      busybox
      bemenu
      lisgd
-     svkbd
      inotify-tools
      pn
      wvkbd
