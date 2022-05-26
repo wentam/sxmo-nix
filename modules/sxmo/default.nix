@@ -37,7 +37,7 @@ in
   # TODO: hack to get sxmo to find it's hooks/superd services
   environment.pathsToLink = [ "/share" ];
 
-  libinput.enable = true; 
+  services.xserver.libinput.enable = true; 
 
    environment.variables.TERMCMD = "st"; # TODO: does X11 sxmo use this var?
 

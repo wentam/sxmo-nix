@@ -45,7 +45,7 @@ in
    # TODO: hack to get sxmo to find it's hooks/superd services
    environment.pathsToLink = [ "/share" ];
 
-   libinput.enable = true;
+   services.xserver.libinput.enable = true;
 
    # $TERMCMD used by the sxmo sway template config
    environment.variables.TERMCMD = "st";
