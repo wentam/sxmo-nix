@@ -10,4 +10,5 @@ rec {
   sxmo-st    = pkgs.callPackage ./pkgs/sxmo-st {};
   sxmo-dmenu = pkgs.callPackage ./pkgs/sxmo-dmenu {};
   superd     = pkgs.callPackage ./pkgs/superd {};
+  tinydm     = pkgs.callPackage ./pkgs/tinydm {};
 }
