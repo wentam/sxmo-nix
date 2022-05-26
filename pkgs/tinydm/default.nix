@@ -24,9 +24,9 @@ stdenv.mkDerivation rec {
   #prePatch = '''';
 
   meta = with lib; {
-    description = "";
-    homepage = "";
-    license = licenses.agpl3Only;
+    description = "Tiny wayland / x11 session starter for single user machines";
+    homepage = "https://gitlab.com/postmarketOS/tinydm";
+    license = licenses.gpl3;
     platforms = platforms.linux;
     maintainers = with maintainers; [ wentam ];
   };
