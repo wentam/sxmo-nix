@@ -5,7 +5,7 @@ let
   sxmoutils = (sxmopkgs.sxmo-utils.overrideAttrs (oldAttrs: rec { passthru.providedSessions = [ "sxmo" ]; }));
 in
 {
-  imports = [];
+  imports = [ ./common.nix ];
   options = {
     services.xserver.desktopManager.sxmo = {
       enable = lib.mkOption {
@@ -32,6 +32,7 @@ in
      xdotool
      doas
      xprintidle
+     conky # Used for clock
    ];
 
    fonts.fonts = [ pkgs.nerdfonts ];

@@ -5,7 +5,7 @@ let
   sxmoutils = (sxmopkgs.sxmo-utils.overrideAttrs (oldAttrs: rec { passthru.providedSessions = [ "swmo" ]; }));
 in
 {
-  imports = [];
+  imports = [ ./common.nix ];
   options = {
     services.xserver.desktopManager.swmo = {
       enable = lib.mkOption {
@@ -30,6 +30,9 @@ in
      wvkbd
      gojq
      doas
+     swayidle
+     wob
+     mako
    ];
 
    fonts.fonts = [ pkgs.nerdfonts ];
