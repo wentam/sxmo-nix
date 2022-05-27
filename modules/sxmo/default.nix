@@ -8,6 +8,14 @@
       libnotify
       mpv
       pamixer # TODO: only needed if pulse?
+      swayidle
+      xdg-user-dirs
+      autocutsel
+      callaudiod
+      dunst
+      mako
+      wob
+      conky
     ];
   };
 }
