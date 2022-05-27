@@ -16,7 +16,18 @@
       mako
       wob
       conky
-      xorg.xkbcomp
     ];
+
+    powerManagement.enable = true;
+
+    # sxmo uses rtcwake to suspend the system, we need
+    # setuid to give it access
+    # TODO: maybe better to require a 'suspend' group?
+    security.wrappers."rtcwake" = {
+      setuid = true;
+      source = "${pkgs.util-linux}/bin/rtcwake";
+      owner  = "root";
+      group  = "wheel";
+    };
   };
 }
