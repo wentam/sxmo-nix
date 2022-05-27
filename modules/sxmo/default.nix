@@ -7,6 +7,7 @@
     environment.systemPackages = with pkgs; [
       libnotify
       mpv
+      pamixer # TODO: only needed if pulse?
     ];
   };
 }

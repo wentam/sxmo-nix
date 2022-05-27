@@ -32,6 +32,16 @@ stdenv.mkDerivation rec {
     find . -type f -exec sed -i "s|/usr/bin/||g" {} +
     sed -i "s|/bin/chgrp|${pkgs.coreutils}/bin/chgrp|g" configs/udev/90-sxmo.rules
     sed -i "s|/bin/chmod|${pkgs.coreutils}/bin/chmod|g" configs/udev/90-sxmo.rules
+
+    # replace some commands that need coreutils things that busybox does not have
+    # depending on system config, they might be calling into busybox and that will break.
+    find . -type f -exec sed -i "s|realpath |${pkgs.coreutils}/bin/realpath |g" {} +
+    find . -type f -exec sed -i "s|stat |${pkgs.coreutils}/bin/stat |g" {} +
+    find . -type f -exec sed -i "s|date |${pkgs.coreutils}/bin/date |g" {} +
+
+    # 'busybox rfkill' isn't working for us, while util-linux is
+    find . -type f -exec sed -i "s|busybox rfkill |rfkill |g" {} +
+    find . -type f -exec sed -i "s|rfkill |${pkgs.util-linux}/bin/rfkill |g" {} +
   '';
 
   meta = with lib; {
