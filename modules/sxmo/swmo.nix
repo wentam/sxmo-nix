@@ -24,6 +24,7 @@ in
      swayidle
      wob
      mako
+     sxmopkgs.wayout
    ];
 
    programs.sway = {
