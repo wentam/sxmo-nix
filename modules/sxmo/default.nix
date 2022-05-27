@@ -16,6 +16,7 @@
       mako
       wob
       conky
+      light
     ];
 
     powerManagement.enable = true;
