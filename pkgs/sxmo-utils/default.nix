@@ -10,6 +10,10 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-moe5sok/40Xc7y1RAvXiOEseja7cDpa9QMiw1VPZOPk";
   };
 
+  patches = [
+    ./remove-wmtoggle-doas.patch
+  ];
+
   passthru.providedSessions = [ "swmo" "sxmo" ];
 
   buildInputs = [ pkgs.gcc pkgs.busybox ];
@@ -21,7 +25,7 @@ stdenv.mkDerivation rec {
     mv $out/usr/lib/udev/rules.d $out/lib/udev/
   '';
 
-  prePatch = ''
+  postPatch = ''
     # fix hardcoded paths
     find . -type f -exec sed -i "s|/usr/share|$out/share|g" {} +
     find . -type f -exec sed -i "s|/etc/profile.d|$out/share/sxmo/profile.d|g" {} +

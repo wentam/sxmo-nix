@@ -30,6 +30,7 @@ in
      pn
      gojq
      xdotool
+     doas
    ];
 
    fonts.fonts = [ pkgs.nerdfonts ];

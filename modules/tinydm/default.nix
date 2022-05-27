@@ -10,6 +10,9 @@ let
      export TINYDM_XSESSION_PATH="${dmcfg.sessionData.desktops}/share/xsessions/"
      export TINYDM_X11_PROFILE_PATH="/var/empty/"
      export TINYDM_WAYLAND_PROFILE_PATH="/var/empty/"
+     # Give any previous sessions a chance to fully close. This makes auto-restart much more reliable.
+     # TODO: there's probably a better solution for this
+     ${pkgs.busybox}/bin/sleep 3
      exec ${sxmopkgs.tinydm}/bin/tinydm-run-session
   '';
   xsession_path = "${dmcfg.sessionData.desktops}/share/xsessions/";
@@ -17,7 +20,7 @@ let
 in
 {
   imports = [
-    ../autologin 
+    ../autologin
   ];
   options = {
     services.xserver.displayManager.tinydm = {
@@ -30,7 +33,6 @@ in
  };
 
  config = lib.mkIf config.services.xserver.displayManager.tinydm.enable {
-
    assertions = [
      {
        assertion = config.services.xserver.enable;
@@ -65,27 +67,42 @@ in
 
    environment.systemPackages = [ sxmopkgs.tinydm ];
 
-   # Set default session
-   services.xserver.displayManager.job.preStart = ''
-     if [ -e ${xsession_path}/${dmcfg.defaultSession}.desktop ]; then
-       ${sxmopkgs.tinydm}/bin/tinydm-set-session -f -s ${xsession_path}/${dmcfg.defaultSession}.desktop
-     fi
+   # Oneshot service that clears our session on boot (and on nixos-rebuild) such that the next service
+   # start runs the default session
+   #
+   # Tinydm users can change their session with tinydm-set-session, so we don't want to force the default
+   # on every DM start (sxmo uses this, for example.)
+   #
+   # If the user has not yet defined a service, DM start will still write the default without a reboot.
+   systemd.services.tinydm-setup = {
+     description = "Tinydm setup";
+     wantedBy = [ "multi-user.target" ];
 
-     if [ -e ${wsession_path}/${dmcfg.defaultSession}.desktop ]; then
-       ${sxmopkgs.tinydm}/bin/tinydm-set-session -f -s ${wsession_path}/${dmcfg.defaultSession}.desktop
+     serviceConfig = {
+       Type = "oneshot";
+       StateDirectory = "/var/lib/tinydm/";
+       User = "root";
+       Group = "root";
+       ExecStart = ''${pkgs.busybox}/bin/rm -f /var/lib/tinydm/default-session.desktop'';
+     };
+   };
+
+   # Set default session on DM start if we don't have a session defined
+   services.xserver.displayManager.job.preStart = ''
+     if [ ! -e /var/lib/tinydm/default-session.desktop ]; then
+       if [ -e ${xsession_path}/${dmcfg.defaultSession}.desktop ]; then
+         ${sxmopkgs.tinydm}/bin/tinydm-set-session -f -s ${xsession_path}/${dmcfg.defaultSession}.desktop
+       fi
+
+       if [ -e ${wsession_path}/${dmcfg.defaultSession}.desktop ]; then
+         ${sxmopkgs.tinydm}/bin/tinydm-set-session -f -s ${wsession_path}/${dmcfg.defaultSession}.desktop
+       fi
+       chmod -R 777 /var/lib/tinydm # TODO: use a group, or perhaps make it owned by the autologin user.
      fi
    '';
 
    # tinydm uses startx for X sessions
    services.xserver.displayManager.startx.enable = true;
-
-   # Set up environment for our (patched) tinydm
-   /*services.xserver.displayManager.job.environment = {
-     TINYDM_WAYLAND_SESSION_PATH = "${dmcfg.sessionData.desktops}/share/wayland-sessions/";
-     TINYDM_XSESSION_PATH="${dmcfg.sessionData.desktops}/share/xsessions/";
-     TINYDM_X11_PROFILE_PATH="/var/empty/";
-     TINYDM_WAYLAND_PROFILE_PATH="/var/empty/";
-   };*/
 
    systemd.services.display-manager.after = [ "getty@tty1.service" "systemd-user-sessions.service" ];
    systemd.services.display-manager.conflicts = [ "getty@tty1.service" ];

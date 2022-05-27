@@ -29,6 +29,7 @@ in
      pn
      wvkbd
      gojq
+     doas
    ];
 
    fonts.fonts = [ pkgs.nerdfonts ];
