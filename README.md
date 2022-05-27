@@ -31,3 +31,4 @@ See also: https://git.sr.ht/~noneucat/nur-packages
 
 # Notes
 * You must use tinydm if you want menu->power->toggle WM to work. It may be worth looking into providing alternative hooks for other DMS later on though!
+* Your user must be in group 'wheel' for sxmo's power off, wifi toggle, bluetooth toggle, modem toggle fetaures to work
