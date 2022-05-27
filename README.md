@@ -9,7 +9,6 @@ See also: https://git.sr.ht/~noneucat/nur-packages
 ```nix
 {
   imports = [
-    ./sxmo-nix/modules/swmo   #
     ./sxmo-nix/modules/sxmo   #
     ./sxmo-nix/modules/tinydm # Or wherever they're located
   ];
