@@ -10,7 +10,8 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-Cy4v/1NuaiSr5Bl6SQMWk5rga8h1QMBUkHpN6M3bWOc=";
   };
 
-  buildInputs = with pkgs; [ meson pam ninja ];
+  nativeBuildInputs = [ pkgs.meson pkgs.ninja ];
+  buildInputs = with pkgs; [ pam ];
 
   meta = with lib; {
     description = "It logs you in. Automatically.";
