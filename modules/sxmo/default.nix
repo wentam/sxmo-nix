@@ -31,6 +31,7 @@ in
      gojq
      xdotool
      doas
+     xprintidle
    ];
 
    fonts.fonts = [ pkgs.nerdfonts ];
