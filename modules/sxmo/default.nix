@@ -16,6 +16,7 @@
       mako
       wob
       conky
+      xorg.xkbcomp
     ];
   };
 }
