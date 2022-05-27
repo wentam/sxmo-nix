@@ -59,7 +59,7 @@ stdenv.mkDerivation rec {
     # apply this to shell script/shell-script-like files.
     # We can't gaurantee this ruleset won't break something in a different file format.
     sep = ''\|'';
-    permittedSymbols = ''\(${sep}\[${sep}\{${sep}=${sep}\"${sep}\)${sep}\]${sep}\:${sep}\}${sep}\'${sep}\<${sep}\>${sep}\s+${sep}\&'';
+    permittedSymbols = ''\(${sep}\[${sep}\{${sep}=${sep}\"${sep}\)${sep}\]${sep}\:${sep}\}${sep}\'${sep}\>${sep}\s+${sep}\&'';
     prefixCheck = ''(^${sep}${permittedSymbols})'';
     suffixCheck = ''($\|${permittedSymbols})'';
     sed_replace = from: to: ''${pkgs.gnused}/bin/sed -E -i "s|${prefixCheck}${from}${suffixCheck}|\1${to}\2|g"'';
