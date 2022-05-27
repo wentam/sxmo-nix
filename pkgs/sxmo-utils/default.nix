@@ -58,8 +58,8 @@ stdenv.mkDerivation rec {
     suffixCheck = ''($\|${permittedSymbols})'';
     sed_replace = from: to: ''${pkgs.gnused}/bin/sed -E -i "s|${prefixCheck}${from}${suffixCheck}|\1${to}\2|g"'';
     sed_replace_with_trailing = from: to: ''${pkgs.gnused}/bin/sed -E -i "s|${prefixCheck}${from}|\1${to}|g"'';
-    find_replace = from: to: ''${pkgs.findutils}/bin/find . -type f -exec ${sed_replace from to} {} +'';
-    find_replace_with_trailing = from: to: ''${pkgs.findutils}/bin/find . -type f -exec ${sed_replace_with_trailing from to} {} +'';
+    find_replace = from: to: ''${pkgs.findutils}/bin/find . -type f ! -name Makefile -exec ${sed_replace from to} {} +'';
+    find_replace_with_trailing = from: to: ''${pkgs.findutils}/bin/find . -type f ! -name Makefile -exec ${sed_replace_with_trailing from to} {} +'';
   in
   ''
     # fix hardcoded paths
