@@ -6,7 +6,7 @@
     environment.systemPackages = with pkgs; [
       libnotify
       mpv # used to play system sounds
-      pamixer # TODO: only needed if pulse?
+      (lib.mkIf config.hardware.pulseaudio.enable pamixer)
       xdg-user-dirs
       autocutsel
       callaudiod
