@@ -18,24 +18,13 @@ in
 
  config = lib.mkIf config.services.xserver.desktopManager.swmo.enable {
    environment.systemPackages = with pkgs; [
-     sxmoutils
-     sxmopkgs.sxmo-st
-     sxmopkgs.superd
      sway
-     busybox
      bemenu
-     lisgd
-     inotify-tools
-     pn
      wvkbd
-     gojq
-     doas
      swayidle
      wob
      mako
    ];
-
-   fonts.fonts = [ pkgs.nerdfonts ];
 
    programs.sway = {
      enable = true;
@@ -45,20 +34,6 @@ in
 
    # Set default sway config to the sxmo template
    environment.etc."sway/config".source = "${sxmopkgs.sxmo-utils}/share/sxmo/appcfg/sway_template";
-
-   # TODO: hack to get sxmo to find it's hooks/superd services
-   environment.pathsToLink = [ "/share" ];
-
-   services.xserver.libinput.enable = true;
-
-   # $TERMCMD used by the sxmo sway template config
-   environment.variables.TERMCMD = "st";
-
-   # Power button shouldn't immediately power off the device
-   # TODO: This change could apply to other sessions. It'd better find a way to do this at session start.
-   services.logind.extraConfig = ''
-       HandlePowerKey=ignore
-   '';
 
    # Install udev rules
    services.udev.packages = [ sxmoutils ];

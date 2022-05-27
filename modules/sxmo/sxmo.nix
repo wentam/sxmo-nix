@@ -18,37 +18,15 @@ in
 
  config = lib.mkIf config.services.xserver.desktopManager.sxmo.enable {
    environment.systemPackages = with pkgs; [
-     sxmoutils
      sxmopkgs.sxmo-dwm
-     sxmopkgs.sxmo-st
      sxmopkgs.sxmo-dmenu
-     sxmopkgs.superd
-     busybox
-     lisgd
      svkbd
-     inotify-tools
-     pn
-     gojq
      xdotool
-     doas
      xprintidle
      conky # Used for clock
    ];
 
-   fonts.fonts = [ pkgs.nerdfonts ];
-
-  # TODO: hack to get sxmo to find it's hooks/superd services
-  environment.pathsToLink = [ "/share" ];
-
   services.xserver.libinput.enable = true; 
-
-   environment.variables.TERMCMD = "st"; # TODO: does X11 sxmo use this var?
-
-   # Power button shouldn't immediately power off the device
-   # TODO: This change could apply to other sessions. It'd better find a way to do this at session start.
-   services.logind.extraConfig = ''
-       HandlePowerKey=ignore
-   '';
 
    # Install udev rules
    services.udev.packages = [ sxmoutils ];
