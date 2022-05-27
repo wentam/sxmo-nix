@@ -5,11 +5,11 @@ rec {
   modules = import ./modules; # NixOS modules
   overlays = import ./overlays; # nixpkgs overlays
 
-  sxmo-utils = pkgs.callPackage ./pkgs/sxmo-utils {};
-  sxmo-dwm   = pkgs.callPackage ./pkgs/sxmo-dwm {};
-  sxmo-st    = pkgs.callPackage ./pkgs/sxmo-st {};
-  sxmo-dmenu = pkgs.callPackage ./pkgs/sxmo-dmenu {};
-  superd     = pkgs.callPackage ./pkgs/superd {};
-  tinydm     = pkgs.callPackage ./pkgs/tinydm {};
-  autologin  = pkgs.callPackage ./pkgs/autologin {};
+  sxmo-utils  = pkgs.callPackage ./pkgs/sxmo-utils {};
+  sxmo-dwm    = pkgs.callPackage ./pkgs/sxmo-dwm {};
+  sxmo-st     = pkgs.callPackage ./pkgs/sxmo-st {};
+  sxmo-dmenu  = pkgs.callPackage ./pkgs/sxmo-dmenu {};
+  superd      = pkgs.callPackage ./pkgs/superd {};
+  tinydm      = pkgs.callPackage ./pkgs/tinydm {};
+  autologin   = pkgs.callPackage ./pkgs/autologin {};
 }
