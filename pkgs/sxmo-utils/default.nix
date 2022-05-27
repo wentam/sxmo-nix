@@ -13,6 +13,7 @@ stdenv.mkDerivation rec {
   patches = [
     ./remove-wmtoggle-doas.patch
     ./fix-makefile-appscript-symlinks.patch
+    ./use-systemctl-poweroff.patch
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];
