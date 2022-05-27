@@ -12,17 +12,23 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./remove-wmtoggle-doas.patch
+    ./fix-makefile-appscript-symlinks.patch
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];
 
-  buildInputs = [ pkgs.gcc pkgs.busybox ];
+  buildInputs = [ pkgs.gcc pkgs.busybox pkgs.coreutils ];
   buildPhase = "make";
 
   installPhase = ''
     make install DESTDIR=$out PREFIX=""
     mkdir -p $out/lib/udev
     mv $out/usr/lib/udev/rules.d $out/lib/udev/
+
+    # Clean up empty directories
+    rmdir $out/usr/lib/udev/
+    rmdir $out/usr/lib/
+    rmdir $out/usr/
   '';
 
   postPatch =
