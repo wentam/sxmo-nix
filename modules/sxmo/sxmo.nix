@@ -24,6 +24,7 @@ in
      xdotool
      xprintidle
      conky # Used for clock
+     clickclack # for keyboard feedback
    ];
 
   services.xserver.libinput.enable = true; 
