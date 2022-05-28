@@ -3,7 +3,7 @@
 buildGoModule rec {
   pname = "superd";
   version = "0.3.2";
-  vendorSha256 = "sha256-H/dZ2KU0TaI+2PbnXWXYPwu6eaNdw62H7nWnFG9zp8w=";
+  vendorSha256 = "sha256-u9xEtuTqhVjKV29bfwW4tHu3HTk45UqH+yC+XQYQdQA=";
 
   doCheck = false; # TODO make tests pass
 
