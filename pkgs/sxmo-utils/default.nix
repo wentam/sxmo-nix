@@ -1,4 +1,4 @@
-{stdenv, pkgs, lib, fetchgit, ...}:
+{stdenv, pkgs, lib, fetchgit, coreutils, findutils, gnused, busybox, ...}:
 
 stdenv.mkDerivation rec {
   pname = "sxmo-utils";
@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
 
   passthru.providedSessions = [ "swmo" "sxmo" ];
 
-  buildInputs = [ pkgs.gcc pkgs.busybox pkgs.coreutils ];
+  nativeBuildInputs = [ coreutils findutils gnused busybox ];
   buildPhase = "make";
 
   installPhase = ''
@@ -63,10 +63,10 @@ stdenv.mkDerivation rec {
     permittedSymbols = ''\(${sep}\[${sep}\{${sep}=${sep}\"${sep}\)${sep}\]${sep}\:${sep}\}${sep}\'${sep}\>${sep}\s+${sep}\&'';
     prefixCheck = ''(^${sep}${permittedSymbols})'';
     suffixCheck = ''($\|${permittedSymbols})'';
-    sed_replace = from: to: ''${pkgs.gnused}/bin/sed -E -i "s|${prefixCheck}${from}${suffixCheck}|\1${to}\2|g"'';
-    sed_replace_with_trailing = from: to: ''${pkgs.gnused}/bin/sed -E -i "s|${prefixCheck}${from}|\1${to}|g"'';
-    find_replace = from: to: ''${pkgs.findutils}/bin/find . -type f ! -name Makefile -exec ${sed_replace from to} {} +'';
-    find_replace_with_trailing = from: to: ''${pkgs.findutils}/bin/find . -type f ! -name Makefile -exec ${sed_replace_with_trailing from to} {} +'';
+    sed_replace = from: to: ''sed -E -i "s|${prefixCheck}${from}${suffixCheck}|\1${to}\2|g"'';
+    sed_replace_with_trailing = from: to: ''sed -E -i "s|${prefixCheck}${from}|\1${to}|g"'';
+    find_replace = from: to: ''find . -type f ! -name Makefile -exec ${sed_replace from to} {} +'';
+    find_replace_with_trailing = from: to: ''find . -type f ! -name Makefile -exec ${sed_replace_with_trailing from to} {} +'';
   in
   ''
     # fix hardcoded paths

@@ -1,4 +1,4 @@
-{stdenv, pkgs, lib, fetchgit, ...}:
+{stdenv, lib, fetchgit, meson, ninja, pam, ...}:
 
 stdenv.mkDerivation rec {
   pname = "autologin";
@@ -10,8 +10,8 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-Cy4v/1NuaiSr5Bl6SQMWk5rga8h1QMBUkHpN6M3bWOc=";
   };
 
-  nativeBuildInputs = [ pkgs.meson pkgs.ninja ];
-  buildInputs = with pkgs; [ pam ];
+  nativeBuildInputs = [ meson ninja ];
+  buildInputs = [ pam ];
 
   meta = with lib; {
     description = "It logs you in. Automatically.";
