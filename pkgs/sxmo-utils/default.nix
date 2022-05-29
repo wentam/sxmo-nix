@@ -14,6 +14,7 @@ stdenv.mkDerivation rec {
     ./remove-wmtoggle-doas.patch
     ./fix-makefile-appscript-symlinks.patch
     ./use-systemctl-poweroff.patch
+    ./003-fix-orientation-detection.patch # Fix for upstream bug, probably remove next release
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];
