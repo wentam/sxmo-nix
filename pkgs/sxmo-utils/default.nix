@@ -15,6 +15,7 @@ stdenv.mkDerivation rec {
     ./fix-makefile-appscript-symlinks.patch
     ./use-systemctl-poweroff.patch
     ./003-fix-orientation-detection.patch # Fix for upstream bug, probably remove next release
+    ./004-repoint-config-paths.patch
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];

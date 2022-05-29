@@ -1,0 +1,25 @@
+diff --git a/configs/appcfg/dunst.conf b/configs/appcfg/dunst.conf
+index 487723b..e66e8e0 100644
+--- a/configs/appcfg/dunst.conf
++++ b/configs/appcfg/dunst.conf
+@@ -24,7 +24,7 @@
+     show_indicators = yes
+     icon_position = left
+     max_icon_size = 32
+-    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
++    icon_path = /run/current-system/sw/share/icons/gnome/16x16/status/:/run/current-system/sw/share/icons/gnome/16x16/devices/
+     sticky_history = yes
+     history_length = 20
+     dmenu = /usr/bin/dmenu -p dunst:
+diff --git a/configs/appcfg/sway_template b/configs/appcfg/sway_template
+index c326dc8..f21ae7a 100644
+--- a/configs/appcfg/sway_template
++++ b/configs/appcfg/sway_template
+@@ -206,6 +206,6 @@ include /etc/sway/config.d/*
+ 
+ exec 'printf %s "$SWAYSOCK" > "$XDG_RUNTIME_DIR"/sxmo.swaysock'
+ 
+-output * bg /usr/share/sxmo/background.jpg fill
++output * bg /run/current-system/sw/share/sxmo/background.jpg fill
+ 
+ exec sxmo_hook_start.sh

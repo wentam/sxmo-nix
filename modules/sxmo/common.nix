@@ -24,6 +24,7 @@ in
       pn
       gojq
       doas
+      gnome-icon-theme
     ];
 
     # We need nerdfonts for all of sxmo's icons to work.
@@ -31,7 +32,11 @@ in
 
     powerManagement.enable = lib.mkDefault true;
 
-    # TODO: hack to get sxmo to find it's hooks/superd services
+    # TODO: We currently need this for sxmo to find it's hooks/superd services,
+    # and for the user's local configuration to reference sxmo things without
+    # needing to migrate for every nix store path change.
+    #
+    # I don't see any easy way around it, but it'd be nice if it wasn't necessary
     environment.pathsToLink = [ "/share" ];
 
     services.xserver.libinput.enable = lib.mkDefault true;
