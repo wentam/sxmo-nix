@@ -43,6 +43,8 @@ stdenv.mkDerivation rec {
     # and suffixed with whitespace or end-of-line.
     # we make exceptions for ([{}])=":<>& chars
     #
+    # We also ignore commented lines
+    #
     # For example with from=stat and to=otherstat:
     # * won't replace 'netstat' with 'netotherstat',
     # * won't replace '/foo/stat' with '/foo/otherstat'
@@ -64,8 +66,10 @@ stdenv.mkDerivation rec {
     permittedSymbols = ''\(${sep}\[${sep}\{${sep}=${sep}\"${sep}\)${sep}\]${sep}\:${sep}\}${sep}\'${sep}\>${sep}\s+${sep}\&'';
     prefixCheck = ''(^${sep}${permittedSymbols})'';
     suffixCheck = ''($\|${permittedSymbols})'';
-    sed_replace = from: to: ''sed -E -i "s|${prefixCheck}${from}${suffixCheck}|\1${to}\2|g"'';
-    sed_replace_with_trailing = from: to: ''sed -E -i "s|${prefixCheck}${from}|\1${to}|g"'';
+    beforeReplace = ''h;s/[^#]*//1;x;s/#.*//;''; # For ignoring comments
+    afterReplace = '';G;s/(.*)\n/\1/'';          # for ignoring comments
+    sed_replace = from: to: ''sed -E -i "${beforeReplace}s|${prefixCheck}${from}${suffixCheck}|\1${to}\2|g${afterReplace}"'';
+    sed_replace_with_trailing = from: to: ''sed -E -i "${beforeReplace}s|${prefixCheck}${from}|\1${to}|g${afterReplace}"'';
     find_replace = from: to: ''find . -type f ! -name Makefile -exec ${sed_replace from to} {} +'';
     find_replace_with_trailing = from: to: ''find . -type f ! -name Makefile -exec ${sed_replace_with_trailing from to} {} +'';
   in
