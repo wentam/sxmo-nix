@@ -16,6 +16,7 @@ stdenv.mkDerivation rec {
     ./use-systemctl-poweroff.patch
     ./003-fix-orientation-detection.patch # Fix for upstream bug, probably remove next release
     ./004-repoint-config-paths.patch
+    ./005-modem-use-coreutils-date.patch
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];
@@ -85,12 +86,13 @@ stdenv.mkDerivation rec {
     # replace some commands that need coreutils things that busybox does not have
     # depending on system config, they might be calling into busybox and that will break.
     ${find_replace "realpath" "${pkgs.coreutils}/bin/realpath"}
-    ${find_replace "stat" "${pkgs.coreutils}/bin/stat"}
-    ${find_replace "date" "${pkgs.coreutils}/bin/date"}
+    ${find_replace "stat --printf" "${pkgs.coreutils}/bin/stat --printf"}
 
     # 'busybox rfkill' isn't working for us, while util-linux is
     ${find_replace "busybox rfkill" "rfkill"}
-    ${find_replace "rfkill" "${pkgs.util-linux}/bin/rfkill"}
+    ${find_replace "rfkill list" "${pkgs.util-linux}/bin/rfkill list"}
+    ${find_replace "rfkill block" "${pkgs.util-linux}/bin/rfkill block"}
+    ${find_replace "rfkill unblock" "${pkgs.util-linux}/bin/rfkill unblock"}
   '';
 
   meta = with lib; {
