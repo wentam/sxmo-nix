@@ -25,6 +25,7 @@ in
       gojq
       doas
       gnome-icon-theme
+      sxmopkgs.mnc
     ];
 
     # We need nerdfonts for all of sxmo's icons to work.

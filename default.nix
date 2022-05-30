@@ -13,4 +13,5 @@ rec {
   tinydm      = pkgs.callPackage ./pkgs/tinydm {};
   autologin   = pkgs.callPackage ./pkgs/autologin {};
   wayout      = pkgs.callPackage ./pkgs/wayout {};
+  mnc         = pkgs.callPackage ./pkgs/mnc {};
 }
