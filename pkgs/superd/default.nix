@@ -5,8 +5,6 @@ buildGoModule rec {
   version = "0.3.2";
   vendorSha256 = "sha256-u9xEtuTqhVjKV29bfwW4tHu3HTk45UqH+yC+XQYQdQA=";
 
-  doCheck = false; # TODO make tests pass
-
   src = fetchgit {
     url = "https://git.sr.ht/~craftyguy/superd";
     rev = version;
