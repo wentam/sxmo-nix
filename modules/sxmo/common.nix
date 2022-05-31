@@ -2,8 +2,19 @@
 
 let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
+  dmcfg = config.services.xserver.desktopManager;
 in
-{
+  {
+
+  options = {
+    services.xserver.desktopManager.sxmo.mms = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Enables MMS support within sxmo/swmo (installs mmsd-tng)";
+      };
+    };
+  };
   config = lib.mkIf (config.services.xserver.desktopManager.swmo.enable || 
                      config.services.xserver.desktopManager.sxmo.enable) {
     environment.systemPackages = with pkgs; [
@@ -24,8 +35,13 @@ in
       pn
       gojq
       doas
-      gnome-icon-theme
-      sxmopkgs.mnc
+      gnome-icon-theme  # dunst needs these
+      sxmopkgs.mnc      # for scheduling suspend wakeups for cron
+      (
+        lib.mkIf 
+        dmcfg.sxmo.mms.enable
+        sxmopkgs.mmsd-tng
+      ) # for MMS
     ];
 
     # We need nerdfonts for all of sxmo's icons to work.
