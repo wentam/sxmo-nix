@@ -40,13 +40,10 @@ in
      gnome-icon-theme  # dunst needs these
    ];
 
-  services.xserver.libinput.enable = true;
+  services.xserver.libinput.enable = lib.mkDefault true;
 
    # Install udev rules
    services.udev.packages = [ sxmoutils ];
-
-   services.xserver.tty = null;
-   services.xserver.display = null;
 
    # Define session
    services.xserver.displayManager.sessionPackages = [ sxmoutils  ];

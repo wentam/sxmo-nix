@@ -34,7 +34,7 @@ in
    };
 
    # Set default sway config to the sxmo template
-   environment.etc."sway/config".source = "${sxmopkgs.sxmo-utils}/share/sxmo/appcfg/sway_template";
+   environment.etc."sway/config".source = lib.mkDefault "${sxmopkgs.sxmo-utils}/share/sxmo/appcfg/sway_template";
 
    # Install udev rules
    services.udev.packages = [ sxmoutils ];

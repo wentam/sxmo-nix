@@ -60,7 +60,7 @@ in
 
    # Power button shouldn't immediately power off the device
    # TODO: This change could apply to other sessions. It'd better find a way to do this at session start.
-   services.logind.extraConfig = ''
+   services.logind.extraConfig = lib.mkDefault ''
        HandlePowerKey=ignore
    '';
 
