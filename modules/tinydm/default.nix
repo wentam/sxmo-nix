@@ -6,8 +6,6 @@ let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
   dmcfg = config.services.xserver.displayManager;
   tinydm-run = pkgs.writeText "tinydm-run-session-wrapper.sh" ''
-     export TINYDM_X11_PROFILE_PATH="/var/empty/"
-     export TINYDM_WAYLAND_PROFILE_PATH="/var/empty/"
      # Give any previous sessions a chance to fully close. This makes auto-restart much more reliable.
      # TODO: there's probably a better solution for this
      ${pkgs.busybox}/bin/sleep 3
