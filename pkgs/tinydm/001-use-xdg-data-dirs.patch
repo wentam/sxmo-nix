@@ -1,25 +1,21 @@
 diff --git a/tinydm-run-session.sh b/tinydm-run-session.sh
-index 5f4eb69..c961f6c 100644
+index 5f4eb69..cadf9fb 100644
 --- a/tinydm-run-session.sh
 +++ b/tinydm-run-session.sh
-@@ -1,6 +1,16 @@
+@@ -1,6 +1,12 @@
  #!/bin/sh
  # Copyright 2020 Oliver Smith
  # SPDX-License-Identifier: GPL-3.0-or-later
 +#
 +# Patched version of tinyDM to allow path configuration - all of the following env vars must be set:
-+# TINYDM_WAYLAND_SESSION_PATH - path to wayland session *.desktop files
-+# TINYDM_XSESSION_PATH        - path to X session *.desktop files
 +# TINYDM_X11_PROFILE_PATH     - path of profiles to be sourced on startup
 +# TINYDM_WAYLAND_PROFILE_PATH - path of profiles to be sourced on startup
-+echo "TINYDM_WAYLAND_SESSION_PATH is ${TINYDM_WAYLAND_SESSION_PATH:?EMPTY}"
-+echo "TINYDM_XSESSION_PATH is ${TINYDM_XSESSION_PATH:?EMPTY}"
-+echo "TINYDM_X11_PROFILE_PATH is ${TINYDM_X11_PROFILE_PATH:?EMPTY}"
-+echo "TINYDM_WAYLAND_PROFILE_PATH is ${TINYDM_WAYLAND_PROFILE_PATH:?EMPTY}"
++#echo "TINYDM_X11_PROFILE_PATH is ${TINYDM_X11_PROFILE_PATH:?EMPTY}"
++#echo "TINYDM_WAYLAND_PROFILE_PATH is ${TINYDM_WAYLAND_PROFILE_PATH:?EMPTY}"
  
  setup_log() {
  	logfile=${XDG_STATE_HOME:-~/.local/state}/tinydm.log
-@@ -30,7 +40,12 @@ source_session_profiles() {
+@@ -30,7 +36,12 @@ source_session_profiles() {
  		exit 1
  	fi
  
@@ -33,7 +29,7 @@ index 5f4eb69..c961f6c 100644
  		if ! [ -e "$file" ]; then
  			continue
  		fi
-@@ -98,22 +113,28 @@ run_session() {
+@@ -98,22 +109,33 @@ run_session() {
  	echo "Exec:    $cmd"
  	echo "---"
  
@@ -53,27 +49,32 @@ index 5f4eb69..c961f6c 100644
 -			exit 1
 -			;;
 -	esac
-+  wayland_sessions=$(realpath $TINYDM_WAYLAND_SESSION_PATH*)
-+  x_sessions=$(realpath $TINYDM_XSESSION_PATH*)
-+
-+  for value in $wayland_sessions
++  IFS=$'\n: '
++  for dir in $XDG_DATA_DIRS
 +  do
-+    if [ "$resolved" == "$value" ]; then
++    xsessions=$(realpath ${dir}/xsessions/* 2>/dev/null)
++    wsessions=$(realpath ${dir}/wayland-sessions/* 2>/dev/null)
++    for session in ${wsessions}
++    do
++    if [ "$resolved" = "$session" ]; then
++      echo "tinydm: running wayland session ${session} (${cmd})"
 +      source_session_profiles wayland
 +      # shellcheck disable=SC2086
 +      run_session_wayland $cmd
 +      break
 +    fi
-+  done
++    done
 +
-+  for value in $x_sessions
-+  do
-+    if [ "$resolved" == "$value" ]; then
-+      source_session_profiles x11
-+      # shellcheck disable=SC2086
-+      run_session_x $cmd
-+      break
-+    fi
++    for session in ${xsessions}
++    do
++      if [ "$resolved" = "$session" ]; then
++        echo "tinydm: running xorg session ${session} (${cmd})"
++        source_session_profiles x11
++        # shellcheck disable=SC2086
++        run_session_x $cmd
++        break
++      fi
++    done
 +  done
  }
  

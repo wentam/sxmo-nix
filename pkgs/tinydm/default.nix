@@ -11,7 +11,9 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-6wmjquhumQHFgE9Hf5bn9fWfqQ5G3nAIvxuGwr5tLpM=";
   };
 
-  patches = [ ./run-session-env-paths.patch ];
+  patches = [
+    ./001-use-xdg-data-dirs.patch
+  ];
 
   buildInputs = [ pkgs.gcc pkgs.busybox ];
   buildPhase = '':'';

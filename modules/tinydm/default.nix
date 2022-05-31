@@ -6,8 +6,6 @@ let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
   dmcfg = config.services.xserver.displayManager;
   tinydm-run = pkgs.writeText "tinydm-run-session-wrapper.sh" ''
-     export TINYDM_WAYLAND_SESSION_PATH="${dmcfg.sessionData.desktops}/share/wayland-sessions/"
-     export TINYDM_XSESSION_PATH="${dmcfg.sessionData.desktops}/share/xsessions/"
      export TINYDM_X11_PROFILE_PATH="/var/empty/"
      export TINYDM_WAYLAND_PROFILE_PATH="/var/empty/"
      # Give any previous sessions a chance to fully close. This makes auto-restart much more reliable.

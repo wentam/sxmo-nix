@@ -33,3 +33,6 @@ See also: https://git.sr.ht/~noneucat/nur-packages
 * You must use tinydm if you want menu->power->toggle WM to work. It may be worth looking into providing alternative hooks for other DMS later on though!
 * Your user must be in group 'wheel' for sxmo's power off, wifi toggle, bluetooth toggle, modem toggle fetaures to work
 * If sxmo doesn't have a profile for your device, you'll need to [patch one in.](https://git.sr.ht/~mil/sxmo-utils/tree/master/item/scripts/deviceprofiles) Also consider upstreaming to sxmo!
+
+# Debugging tips
+* If you're using tinydm, ~/.local/state/tinydm.log contains sxmo's output
