@@ -25,7 +25,6 @@ in
       xdg-user-dirs
       autocutsel
       (lib.mkIf config.sound.enable callaudiod)
-      dunst
       light # for adjusting backlight
       sxmopkgs.sxmo-utils
       sxmopkgs.sxmo-st
@@ -35,7 +34,6 @@ in
       pn
       gojq
       doas
-      gnome-icon-theme  # dunst needs these
       sxmopkgs.mnc      # for scheduling suspend wakeups for cron
       (
         lib.mkIf 

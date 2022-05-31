@@ -36,6 +36,8 @@ in
      xorg.xmodmap
      feh
      unclutter-xfixes-extrabin
+     dunst
+     gnome-icon-theme  # dunst needs these
    ];
 
   services.xserver.libinput.enable = true;
