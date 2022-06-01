@@ -6,10 +6,7 @@ let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
   dmcfg = config.services.xserver.displayManager;
   tinydm-run = pkgs.writeText "tinydm-run-session-wrapper.sh" ''
-     # Give any previous sessions a chance to fully close. This makes auto-restart much more reliable.
-     # TODO: there's probably a better solution for this
-     ${pkgs.busybox}/bin/sleep 3
-     exec ${sxmopkgs.tinydm}/bin/tinydm-run-session
+    exec ${sxmopkgs.tinydm}/bin/tinydm-run-session
   '';
   xsession_path = "${dmcfg.sessionData.desktops}/share/xsessions/";
   wsession_path = "${dmcfg.sessionData.desktops}/share/wayland-sessions/";
@@ -63,7 +60,7 @@ in
 
    environment.systemPackages = [ sxmopkgs.tinydm ];
 
-   # Oneshot service that clears our session on boot (and on nixos-rebuild) such that the next service
+   # Oneshot service that clears our session on boot and nixos-rebuild such that the next service
    # start runs the default session
    #
    # Tinydm users can change their session with tinydm-set-session, so we don't want to force the default
@@ -93,7 +90,6 @@ in
        if [ -e ${wsession_path}/${dmcfg.defaultSession}.desktop ]; then
          ${sxmopkgs.tinydm}/bin/tinydm-set-session -f -s ${wsession_path}/${dmcfg.defaultSession}.desktop
        fi
-       chmod -R 777 /var/lib/tinydm # TODO: use a group, or perhaps make it owned by the autologin user.
      fi
    '';
 
@@ -102,6 +98,9 @@ in
 
    systemd.services.display-manager.after = [ "getty@tty1.service" "systemd-user-sessions.service" ];
    systemd.services.display-manager.conflicts = [ "getty@tty1.service" ];
+
+   # More durable service restarting (sxmo toggle WM feature breaks without this)
+   systemd.services.display-manager.serviceConfig.RestartSec = lib.mkOverride 10 3;
 
    services.xserver.displayManager.job.execCmd = ''
      exec ${sxmopkgs.autologin}/bin/autologin ${dmcfg.autoLogin.user} /run/current-system/sw/bin/sh ${tinydm-run}
