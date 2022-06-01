@@ -41,6 +41,9 @@ in
       ) # for MMS
     ];
 
+    # Install udev rules
+    services.udev.packages = [ sxmopkgs.sxmo-utils ];
+
     # We need nerdfonts for all of sxmo's icons to work.
     fonts.fonts = [ pkgs.nerdfonts ];
 
@@ -66,30 +69,30 @@ in
       "${sxmopkgs.sxmo-utils}/share/sxmo/default_hooks/"
     ];
 
-   # Power button shouldn't immediately power off the device
-   # TODO: This change could apply to other sessions. It'd better find a way to do this at session start.
-   services.logind.extraConfig = lib.mkDefault ''
+    # Power button shouldn't immediately power off the device
+    # TODO: This change could apply to other sessions. It'd better find a way to do this at session start.
+    services.logind.extraConfig = lib.mkDefault ''
        HandlePowerKey=ignore
-   '';
+    '';
 
-   # Sxmo uses doas to run these commands as root. We need to allow that.
-   # sxmo-utils provides this config, but we shouldn't ask the application
-   # what the application is permitted to run as root :)
-   #
-   # As such, we maintain it here.
-   #
-   # Note: this allows *any wheel user* to run these commands as root without a password.
-   # This isn't too bad, because generally it's intended that wheel users have access
-   # to the root account in some way.
-   #
-   # TODO: this requires that the sxmo user be in wheel.
-   # This means, for example, that any non-wheel user can't shut down the device or toggle wifi.
-   # It may be better to split this up into more specific groups, perhaps:
-   # sessionctl,rfctl,powerctl
-   #
-   # Downside is that this would need to be specifically documented for any users of the module,
-   # as these groups are not a standard sxmo thing.
-   security.doas.extraConfig = ''
+    # Sxmo uses doas to run these commands as root. We need to allow that.
+    # sxmo-utils provides this config, but we shouldn't ask the application
+    # what the application is permitted to run as root :)
+    #
+    # As such, we maintain it here.
+    #
+    # Note: this allows *any wheel user* to run these commands as root without a password.
+    # This isn't too bad, because generally it's intended that wheel users have access
+    # to the root account in some way.
+    #
+    # TODO: this requires that the sxmo user be in wheel.
+    # This means, for example, that any non-wheel user can't shut down the device or toggle wifi.
+    # It may be better to split this up into more specific groups, perhaps:
+    # sessionctl,rfctl,powerctl
+    #
+    # Downside is that this would need to be specifically documented for any users of the module,
+    # as these groups are not a standard sxmo thing.
+    security.doas.extraConfig = ''
      permit persist :wheel
      permit nopass :wheel as root cmd busybox args poweroff
      permit nopass :wheel as root cmd busybox args reboot
@@ -104,8 +107,8 @@ in
      permit nopass :wheel as root cmd systemctl args stop eg25-manager
      permit nopass :wheel as root cmd systemctl args start ModemManager
      permit nopass :wheel as root cmd systemctl args stop ModemManager
-   '';
-   security.doas.enable = true;
+    '';
+    security.doas.enable = true;
 
     # sxmo uses rtcwake to suspend the system, we need
     # setuid to give it access

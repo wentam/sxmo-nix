@@ -41,10 +41,7 @@ in
      sxmopkgs.sxmo-st
    ];
 
-  services.xserver.libinput.enable = lib.mkDefault true;
-
-   # Install udev rules
-   services.udev.packages = [ sxmoutils ];
+   services.xserver.libinput.enable = lib.mkDefault true;
 
    # Define session
    services.xserver.displayManager.sessionPackages = [ sxmoutils  ];
