@@ -1,11 +1,12 @@
-{stdenv, pkgs, lib, fetchgit, ...}:
+{stdenv, pkgs, lib, fetchFromSourcehut, ...}:
 
 stdenv.mkDerivation rec {
   pname = "wayout";
   version = "0.1.2";
 
-  src = fetchgit {
-    url = "https://git.sr.ht/~proycon/wayout";
+  src = fetchFromSourcehut {
+    owner = "~proycon";
+    repo = "wayout";
     rev = version;
     sha256 = "sha256-gbsAGpo4c/p8Ad2iF7dsDKjCsF2tZJxwr/ncWSNNyqQ=";
   };

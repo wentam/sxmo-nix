@@ -1,11 +1,12 @@
-{stdenv, pkgs, lib, fetchgit, dwm, ...}:
+{stdenv, pkgs, lib, fetchFromSourcehut, dwm, ...}:
 
 (dwm.overrideAttrs (oldAttrs: rec {
   name = "smxo-dwm";
   version = "6.2.17";
 
-  src = fetchgit {
-    url = "https://git.sr.ht/~mil/sxmo-dwm";
+  src = fetchFromSourcehut {
+    owner = "~mil";
+    repo = "sxmo-dwm";
     rev = version;
     sha256 = "sha256-/q4QdXWDlNkhsLudAehAxofDs7BCMRAPna0S9gDZjZs=";
   };

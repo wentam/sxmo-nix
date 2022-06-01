@@ -1,11 +1,12 @@
-{stdenv, lib, fetchgit, meson, ninja, pam, ...}:
+{stdenv, lib, fetchFromSourcehut, meson, ninja, pam, ...}:
 
 stdenv.mkDerivation rec {
   pname = "autologin";
   version = "1.0.0";
 
-  src = fetchgit {
-    url = "https://git.sr.ht/~kennylevinsen/autologin";
+  src = fetchFromSourcehut {
+    owner = "~kennylevinsen";
+    repo = "autologin";
     rev = version;
     sha256 = "sha256-Cy4v/1NuaiSr5Bl6SQMWk5rga8h1QMBUkHpN6M3bWOc=";
   };

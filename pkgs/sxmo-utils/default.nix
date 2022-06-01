@@ -1,19 +1,19 @@
-{stdenv, pkgs, lib, fetchgit, coreutils, findutils, gnused, busybox, ...}:
+{stdenv, pkgs, lib, fetchFromSourcehut, coreutils, findutils, gnused, busybox, ...}:
 
 stdenv.mkDerivation rec {
   pname = "sxmo-utils";
   version = "1.9.0";
 
-  src = fetchgit {
-    url = "https://git.sr.ht/~mil/sxmo-utils";
+  src = fetchFromSourcehut {
+    owner = "~mil";
+    repo = "sxmo-utils";
     rev = version;
-    sha256 = "sha256-moe5sok/40Xc7y1RAvXiOEseja7cDpa9QMiw1VPZOPk";
+    sha256 = "sha256-moe5sok/40Xc7y1RAvXiOEseja7cDpa9QMiw1VPZOPk=";
   };
 
   patches = [
-    ./remove-wmtoggle-doas.patch
-    ./fix-makefile-appscript-symlinks.patch
-    ./use-systemctl-poweroff.patch
+    ./001-fix-makefile-appscript-symlinks.patch
+    ./002-use-systemctl-poweroff.patch
     ./003-fix-orientation-detection.patch # Fix for upstream bug, probably remove next release
     ./004-repoint-config-paths.patch
     ./005-modem-use-coreutils-date.patch
@@ -21,11 +21,11 @@ stdenv.mkDerivation rec {
 
   passthru.providedSessions = [ "swmo" "sxmo" ];
 
-  nativeBuildInputs = [ coreutils findutils gnused busybox ];
+  nativeBuildInputs = [ coreutils findutils gnused ];
   buildPhase = "make";
 
   installPhase = ''
-    make install DESTDIR=$out PREFIX=""
+    make install OPENRC=0 DESTDIR=$out PREFIX=""
     mkdir -p $out/lib/udev
     mv $out/usr/lib/udev/rules.d $out/lib/udev/
 
@@ -59,11 +59,6 @@ stdenv.mkDerivation rec {
     #
     # the _with_trailing functions don't perform the suffix check,
     # so you can replace the prefix portion of paths.
-    #
-    # TODO: this set of rules only really applies to shell scripts.
-    # While shell scripts are most of what exists here, we should still only
-    # apply this to shell script/shell-script-like files.
-    # We can't gaurantee this ruleset won't break something in a different file format.
     sep = ''\|'';
     permittedSymbols = ''\(${sep}\[${sep}\{${sep}=${sep}\"${sep}\)${sep}\]${sep}\:${sep}\}${sep}\'${sep}\>${sep}\s+${sep}\&'';
     prefixCheck = ''(^${sep}${permittedSymbols})'';

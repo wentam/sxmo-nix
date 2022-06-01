@@ -1,11 +1,12 @@
-{stdenv, pkgs, lib, fetchgit, dmenu, ...}:
+{stdenv, pkgs, lib, fetchFromSourcehut, dmenu, ...}:
 
 (dmenu.overrideAttrs (oldAttrs: rec {
   name = "smxo-dmenu";
   version = "5.0.14";
 
-  src = fetchgit {
-    url = "https://git.sr.ht/~mil/sxmo-dmenu";
+  src = fetchFromSourcehut {
+    owner = "~mil";
+    repo = "sxmo-dmenu";
     rev = version;
     sha256 = "sha256-r5E1XhefEvUKRpMVGp/77ewzUHNTc6CuiFtQwjh4CWk=";
   };
