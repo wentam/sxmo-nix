@@ -51,12 +51,23 @@ in
     # and for the user's local configuration to reference sxmo things without
     # needing to migrate for every nix store path change.
     #
-    # I don't see any easy way around it, but it'd be nice if it wasn't necessary
+    # I don't see any easy way around it, but it'd be nice if it wasn't necessary 
     environment.pathsToLink = [ "/share" ];
 
     services.xserver.libinput.enable = lib.mkDefault true;
 
     environment.variables.TERMCMD = lib.mkDefault "st";
+
+    # For sxmo scripts to work over ssh etc, we need these vars defined
+    environment.variables.XDG_CONFIG_HOME = lib.mkDefault "$HOME/.config";
+    environment.variables.XDG_DATA_HOME   = lib.mkDefault "$HOME/.local/share";
+    environment.variables.XDG_CACHE_HOME  = lib.mkDefault "$HOME/.cache";
+    environment.variables.XDG_BIN_HOME    = lib.mkDefault "$HOME/.local/bin";
+    environment.variables.PATH = [
+      "${config.environment.variables.XDG_BIN_HOME}"
+      "${config.environment.variables.XDG_CONFIG_HOME}/sxmo/hooks/"
+      "${sxmopkgs.sxmo-utils}/share/sxmo/default_hooks/"
+    ];
 
    # Power button shouldn't immediately power off the device
    # TODO: This change could apply to other sessions. It'd better find a way to do this at session start.
