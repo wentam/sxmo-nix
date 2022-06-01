@@ -25,6 +25,7 @@ in
      wob
      mako
      sxmopkgs.wayout
+     foot
    ];
 
    programs.sway = {

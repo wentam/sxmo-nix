@@ -38,6 +38,7 @@ in
      unclutter-xfixes-extrabin
      dunst
      gnome-icon-theme  # dunst needs these
+     sxmopkgs.sxmo-st
    ];
 
   services.xserver.libinput.enable = lib.mkDefault true;

@@ -27,7 +27,6 @@ in
       (lib.mkIf config.sound.enable callaudiod)
       light # for adjusting backlight
       sxmopkgs.sxmo-utils
-      sxmopkgs.sxmo-st
       sxmopkgs.superd
       busybox
       lisgd
@@ -55,8 +54,6 @@ in
     environment.pathsToLink = [ "/share" ];
 
     services.xserver.libinput.enable = lib.mkDefault true;
-
-    environment.variables.TERMCMD = lib.mkDefault "st";
 
     # For sxmo scripts to work over ssh etc, we need these vars defined
     environment.variables.XDG_CONFIG_HOME = lib.mkDefault "$HOME/.config";
