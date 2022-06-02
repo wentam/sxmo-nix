@@ -370,10 +370,10 @@ index 86d72eb..69a4d13 100755
  	dwm)
  		/usr/bin/dwm -v
 diff --git a/scripts/core/sxmo_wmtoggle.sh b/scripts/core/sxmo_wmtoggle.sh
-index 9af41f0..8dfa7da 100644
+index 9af41f0..16dd1fa 100644
 --- a/scripts/core/sxmo_wmtoggle.sh
 +++ b/scripts/core/sxmo_wmtoggle.sh
-@@ -2,18 +2,20 @@
+@@ -2,20 +2,22 @@
  # SPDX-License-Identifier: AGPL-3.0-only
  # Copyright 2022 Sxmo Contributors
  
@@ -388,14 +388,18 @@ index 9af41f0..8dfa7da 100644
 -	/usr/share/wayland-sessions/swmo.desktop)
 +	"$(realpath $(xdg_data_path wayland-sessions/swmo.desktop 1))")
  		command -v dwm >/dev/null || not_ready_yet
- 		doas tinydm-set-session -f -s /usr/share/xsessions/sxmo.desktop
+-		doas tinydm-set-session -f -s /usr/share/xsessions/sxmo.desktop
++		doas tinydm-set-session -f -s $(xdg_data_path xsessions/sxmo.desktop 1)
  		pkill sway
  		;;
 -	/usr/share/xsessions/sxmo.desktop)
 +	"$(realpath $(xdg_data_path xsessions/sxmo.desktop 1))")
  		command -v sway >/dev/null || not_ready_yet
- 		doas tinydm-set-session -f -s /usr/share/wayland-sessions/swmo.desktop
+-		doas tinydm-set-session -f -s /usr/share/wayland-sessions/swmo.desktop
++		doas tinydm-set-session -f -s $(xdg_data_path wayland-sessions/swmo.desktop 1)
  		pkill dwm
+ 		;;
+ esac
 diff --git a/scripts/core/sxmo_xinit.sh b/scripts/core/sxmo_xinit.sh
 index d002fc3..6cd25a8 100755
 --- a/scripts/core/sxmo_xinit.sh

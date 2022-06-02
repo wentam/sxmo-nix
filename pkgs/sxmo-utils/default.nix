@@ -12,12 +12,12 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    ./000-paths.patch
+    ./000-paths.patch # replaces /usr/share with $XDG_DATA_DIRS usage
     ./001-fix-makefile-appscript-symlinks.patch
-    ./002-use-systemctl-poweroff.patch
+    ./002-use-systemctl-poweroff.patch    # normal 'poweroff' doesn't seem to work
     ./003-fix-orientation-detection.patch # Fix for upstream bug, probably remove next release
     ./004-repoint-config-paths.patch
-    ./005-modem-use-coreutils-date.patch
+    ./005-modem-use-coreutils-date.patch # See https://todo.sr.ht/~mil/sxmo-tickets/446
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];
@@ -46,7 +46,7 @@ stdenv.mkDerivation rec {
     # and suffixed with whitespace or end-of-line.
     # we make exceptions for ([{}])=":<>& chars
     #
-    # We also ignore commented lines
+    # We also ignore commented lines (this is important to avoid unnecessary migrations by the user)
     #
     # For example with from=stat and to=otherstat:
     # * won't replace 'netstat' with 'netotherstat',
@@ -73,7 +73,6 @@ stdenv.mkDerivation rec {
   in
   ''
     # fix hardcoded paths
-    ${find_replace_with_trailing "/usr/share" "$out/share"}
     ${find_replace_with_trailing "/etc/profile.d" "$out/share/sxmo/profile.d"}
     ${find_replace_with_trailing "/usr/bin/" ""}
     sed -i "s|/bin/chgrp|${pkgs.coreutils}/bin/chgrp|g" configs/udev/90-sxmo.rules
