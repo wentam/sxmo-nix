@@ -165,7 +165,7 @@ index 0072150..cc79d2b 100755
  WEATHERXML=""
  
 diff --git a/scripts/core/sxmo_common.sh b/scripts/core/sxmo_common.sh
-index 0a0143d..5c5679a 100644
+index 0a0143d..0cc275f 100644
 --- a/scripts/core/sxmo_common.sh
 +++ b/scripts/core/sxmo_common.sh
 @@ -47,3 +47,42 @@ sxmo_log() {
@@ -197,11 +197,11 @@ index 0a0143d..5c5679a 100644
 +
 +	IFS=':'
 +	instance=0
-+  for dir in $XDG_DATA_DIRS
-+  do
++	for dir in $XDG_DATA_DIRS
++	do
 +		if [ -e "$dir/$filepath" ]; then
-+		  if [ "$instance" -ge "$instance_count" ] && [ "$instance_count" != "0" ]; then
-+		 		break
++			if [ "$instance" -ge "$instance_count" ] && [ "$instance_count" != "0" ]; then
++				break
 +			fi
 +			if [ $instance -gt 0 ]; then
 +				printf '%s' "${sep}"
