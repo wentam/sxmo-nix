@@ -3,14 +3,6 @@
 let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
   sxmoutils = (sxmopkgs.sxmo-utils.overrideAttrs (oldAttrs: rec { passthru.providedSessions = [ "sxmo" ]; }));
-
-  # unclutter-xfixes calls it's binary 'unclutter'.
-  # We need both unclutter and unclutter-xfixes binaries. sxmo expects both!
-  unclutter-xfixes-extrabin = pkgs.unclutter-xfixes.overrideAttrs (oldAttrs: {
-    postInstall = ''
-      ln -s $out/bin/unclutter $out/bin/unclutter-xfixes
-    '';
-  });
 in
 {
   imports = [ ./common.nix ];
@@ -35,7 +27,7 @@ in
      clickclack # for keyboard feedback
      xorg.xmodmap
      feh
-     unclutter-xfixes-extrabin
+     unclutter-xfixes
      dunst
      gnome-icon-theme  # dunst needs these
      sxmopkgs.sxmo-st
