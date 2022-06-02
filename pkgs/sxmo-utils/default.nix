@@ -12,6 +12,7 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
+    ./000-paths.patch
     ./001-fix-makefile-appscript-symlinks.patch
     ./002-use-systemctl-poweroff.patch
     ./003-fix-orientation-detection.patch # Fix for upstream bug, probably remove next release

@@ -1,0 +1,41 @@
+diff --git a/scripts/core/sxmo_wmtoggle.sh b/scripts/core/sxmo_wmtoggle.sh
+index 9af41f0..094f16d 100644
+--- a/scripts/core/sxmo_wmtoggle.sh
++++ b/scripts/core/sxmo_wmtoggle.sh
+@@ -7,15 +7,24 @@ not_ready_yet() {
+ 	exit 1
+ }
+ 
+-case "$(realpath /var/lib/tinydm/default-session.desktop)" in
+-	/usr/share/wayland-sessions/swmo.desktop)
+-		command -v dwm >/dev/null || not_ready_yet
+-		doas tinydm-set-session -f -s /usr/share/xsessions/sxmo.desktop
+-		pkill sway
+-		;;
+-	/usr/share/xsessions/sxmo.desktop)
+-		command -v sway >/dev/null || not_ready_yet
+-		doas tinydm-set-session -f -s /usr/share/wayland-sessions/swmo.desktop
+-		pkill dwm
+-		;;
+-esac
++IFS=$'\n: '
++for dir in $XDG_DATA_DIRS
++do
++	xsessions=${dir}/xsessions/
++	wsessions=${dir}/wayland-sessions/
++
++	case "$(realpath /var/lib/tinydm/default-session.desktop)" in
++    "$(realpath $wsessions/swmo.desktop 2>/dev/null)")
++			command -v dwm >/dev/null || not_ready_yet
++			doas tinydm-set-session -f -s $xsessions/sxmo.desktop
++			pkill sway
++			break
++			;;
++    "$(realpath $xsessions/sxmo.desktop 2>/dev/null)")
++			command -v sway >/dev/null || not_ready_yet
++			doas tinydm-set-session -f -s $wsessions/swmo.desktop
++			pkill dwm
++			break
++			;;
++	esac
++done
