@@ -14,6 +14,11 @@ in
         description = "Enables MMS support within sxmo/swmo (installs mmsd-tng)";
       };
     };
+    services.xserver.desktopManager.sxmo.installScriptDeps = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Puts the dependencies needed for sxmo's builtin scripts into environment.systemPackages.";
+    };
   };
   config = lib.mkIf (config.services.xserver.desktopManager.swmo.enable || 
                      config.services.xserver.desktopManager.sxmo.enable) {
@@ -39,6 +44,11 @@ in
         dmcfg.sxmo.mms.enable
         sxmopkgs.mmsd-tng
       ) # for MMS
+      (
+        lib.mkIf
+        dmcfg.sxmo.installScriptDeps
+        sfeed
+      )
     ];
 
     # Install udev rules
