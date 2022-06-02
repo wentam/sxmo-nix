@@ -370,48 +370,34 @@ index 86d72eb..69a4d13 100755
  	dwm)
  		/usr/bin/dwm -v
 diff --git a/scripts/core/sxmo_wmtoggle.sh b/scripts/core/sxmo_wmtoggle.sh
-index 9af41f0..094f16d 100644
+index 9af41f0..8dfa7da 100644
 --- a/scripts/core/sxmo_wmtoggle.sh
 +++ b/scripts/core/sxmo_wmtoggle.sh
-@@ -7,15 +7,24 @@ not_ready_yet() {
+@@ -2,18 +2,20 @@
+ # SPDX-License-Identifier: AGPL-3.0-only
+ # Copyright 2022 Sxmo Contributors
+ 
++. sxmo_common.sh
++
+ not_ready_yet() {
+ 	sxmo_notify_user.sh "Your device looks not ready yet"
  	exit 1
  }
  
--case "$(realpath /var/lib/tinydm/default-session.desktop)" in
+ case "$(realpath /var/lib/tinydm/default-session.desktop)" in
 -	/usr/share/wayland-sessions/swmo.desktop)
--		command -v dwm >/dev/null || not_ready_yet
--		doas tinydm-set-session -f -s /usr/share/xsessions/sxmo.desktop
--		pkill sway
--		;;
++	"$(realpath $(xdg_data_path wayland-sessions/swmo.desktop 1))")
+ 		command -v dwm >/dev/null || not_ready_yet
+ 		doas tinydm-set-session -f -s /usr/share/xsessions/sxmo.desktop
+ 		pkill sway
+ 		;;
 -	/usr/share/xsessions/sxmo.desktop)
--		command -v sway >/dev/null || not_ready_yet
--		doas tinydm-set-session -f -s /usr/share/wayland-sessions/swmo.desktop
--		pkill dwm
--		;;
--esac
-+IFS=$'\n: '
-+for dir in $XDG_DATA_DIRS
-+do
-+	xsessions=${dir}/xsessions/
-+	wsessions=${dir}/wayland-sessions/
-+
-+	case "$(realpath /var/lib/tinydm/default-session.desktop)" in
-+    "$(realpath $wsessions/swmo.desktop 2>/dev/null)")
-+			command -v dwm >/dev/null || not_ready_yet
-+			doas tinydm-set-session -f -s $xsessions/sxmo.desktop
-+			pkill sway
-+			break
-+			;;
-+    "$(realpath $xsessions/sxmo.desktop 2>/dev/null)")
-+			command -v sway >/dev/null || not_ready_yet
-+			doas tinydm-set-session -f -s $wsessions/swmo.desktop
-+			pkill dwm
-+			break
-+			;;
-+	esac
-+done
++	"$(realpath $(xdg_data_path xsessions/sxmo.desktop 1))")
+ 		command -v sway >/dev/null || not_ready_yet
+ 		doas tinydm-set-session -f -s /usr/share/wayland-sessions/swmo.desktop
+ 		pkill dwm
 diff --git a/scripts/core/sxmo_xinit.sh b/scripts/core/sxmo_xinit.sh
-index d002fc3..a746c09 100755
+index d002fc3..6cd25a8 100755
 --- a/scripts/core/sxmo_xinit.sh
 +++ b/scripts/core/sxmo_xinit.sh
 @@ -4,6 +4,7 @@
@@ -431,7 +417,7 @@ index d002fc3..a746c09 100755
  	xsetroot -mod 29 29 -fg '#0b3a4c' -bg '#082430'
  	xset s off -dpms
 -	for xr in /usr/share/sxmo/appcfg/*.xr; do
-+	for xr in $(xdg_data_path sxmo/appcfg/*.xr); do
++	for xr in $(xdg_data_path sxmo/appcfg 1)/*.xr; do
  		xrdb -merge "$xr"
  	done
  	[ -e "$HOME"/.Xresources ] && xrdb -merge "$HOME"/.Xresources
