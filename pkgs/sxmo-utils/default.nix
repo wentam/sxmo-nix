@@ -1,23 +1,22 @@
-{stdenv, pkgs, lib, fetchFromSourcehut, coreutils, findutils, gnused, busybox, ...}:
+{stdenv, pkgs, lib, fetchgit, coreutils, findutils, gnused, busybox, ...}:
 
 stdenv.mkDerivation rec {
   pname = "sxmo-utils";
-  version = "1.9.0";
+  #version = "1.9.0";
+  version = "d6a6fc2c4767a49e8fd1be7293c2bbd47da3f811";
 
-  src = fetchFromSourcehut {
-    owner = "~mil";
-    repo = "sxmo-utils";
+  src = fetchgit {
+    url = "https://git.sr.ht/~mil/sxmo-utils";
     rev = version;
-    sha256 = "sha256-moe5sok/40Xc7y1RAvXiOEseja7cDpa9QMiw1VPZOPk=";
+    sha256 = "sha256-cuG4/hhi98+UFBI/lKwlKkz0vqlKtqR8G1vmHKMs1zE=";
   };
 
   patches = [
     ./000-paths.patch # replaces /usr/share with $XDG_DATA_DIRS usage
     ./001-fix-makefile-appscript-symlinks.patch
     ./002-use-systemctl-poweroff.patch    # normal 'poweroff' doesn't seem to work
-    ./003-fix-orientation-detection.patch # Fix for upstream bug, probably remove next release
-    ./004-repoint-config-paths.patch
-    ./005-modem-use-coreutils-date.patch # See https://todo.sr.ht/~mil/sxmo-tickets/446
+    ./003-repoint-config-paths.patch
+    ./004-modem-use-coreutils-date.patch # See https://todo.sr.ht/~mil/sxmo-tickets/446
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];
