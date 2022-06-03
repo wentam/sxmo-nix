@@ -1,5 +1,5 @@
 diff --git a/configs/default_hooks/sxmo_hook_desktop_widget.sh b/configs/default_hooks/sxmo_hook_desktop_widget.sh
-index cd27b80..ee0791d 100644
+index cd27b80..c9dc032 100644
 --- a/configs/default_hooks/sxmo_hook_desktop_widget.sh
 +++ b/configs/default_hooks/sxmo_hook_desktop_widget.sh
 @@ -4,6 +4,9 @@
@@ -18,11 +18,11 @@ index cd27b80..ee0791d 100644
  	# For X we use conky (if not already running):
 -	exec conky -c /usr/share/sxmo/appcfg/conky24h.conf #24 hour clock
 -	#exec conky -c /usr/share/sxmo/appcfg/conky.conf #12 hour clock (am/pm)
-+	exec conky -c "$(xdg_data_path sxmo/appcfg/conky24h.conf 1)" #24 hour clock
-+	#exec conky -c "$(xdg_data_path sxmo/appcfg/conky.conf 1)" #12 hour clock (am/pm)
++	exec conky -c "$(xdg_data_path sxmo/appcfg/conky24h.conf)" #24 hour clock
++	#exec conky -c "$(xdg_data_path sxmo/appcfg/conky.conf)" #12 hour clock (am/pm)
  fi
 diff --git a/configs/default_hooks/sxmo_hook_ring.sh b/configs/default_hooks/sxmo_hook_ring.sh
-index 3290923..7c85129 100644
+index 3290923..73d6e74 100644
 --- a/configs/default_hooks/sxmo_hook_ring.sh
 +++ b/configs/default_hooks/sxmo_hook_ring.sh
 @@ -8,6 +8,10 @@
@@ -41,12 +41,12 @@ index 3290923..7c85129 100644
  
  # Start the mpv ring until another hook kill it or the max (10) is reached
 -mpv --quiet --no-video --loop=10 /usr/share/sxmo/ring.ogg &
-+mpv --quiet --no-video --loop=10 "$(xdg_data_path sxmo/ring.ogg 1)" &
++mpv --quiet --no-video --loop=10 "$(xdg_data_path sxmo/ring.ogg)" &
  MPVID=$!
  echo "$MPVID" > "$XDG_RUNTIME_DIR/sxmo.ring.pid"
  
 diff --git a/configs/default_hooks/sxmo_hook_scripts.sh b/configs/default_hooks/sxmo_hook_scripts.sh
-index 7bae97c..96ca81a 100755
+index 7bae97c..4522db5 100755
 --- a/configs/default_hooks/sxmo_hook_scripts.sh
 +++ b/configs/default_hooks/sxmo_hook_scripts.sh
 @@ -37,7 +37,7 @@ fi
@@ -54,12 +54,12 @@ index 7bae97c..96ca81a 100755
  
  # System Scripts
 -find /usr/share/sxmo/appscripts -type f -o -type l | sort -f | while read -r script; do
-+find "$(xdg_data_path sxmo/appscripts 1)" -type f -o -type l | sort -f | while read -r script; do
++find "$(xdg_data_path sxmo/appscripts)" -type f -o -type l | sort -f | while read -r script; do
  	title="$(get_title "$script")"
  	write_line "$title" "$script"
  done
 diff --git a/configs/default_hooks/sxmo_hook_sendsms.sh b/configs/default_hooks/sxmo_hook_sendsms.sh
-index 85aa634..4f72fb5 100644
+index 85aa634..f3b3da8 100644
 --- a/configs/default_hooks/sxmo_hook_sendsms.sh
 +++ b/configs/default_hooks/sxmo_hook_sendsms.sh
 @@ -8,5 +8,7 @@
@@ -70,9 +70,9 @@ index 85aa634..4f72fb5 100644
 +. sxmo_common.sh
  
 -mpv --quiet --no-video /usr/share/sxmo/notify.ogg
-+mpv --quiet --no-video "$(xdg_data_path sxmo/notify.ogg 1)"
++mpv --quiet --no-video "$(xdg_data_path sxmo/notify.ogg)"
 diff --git a/configs/default_hooks/sxmo_hook_sms.sh b/configs/default_hooks/sxmo_hook_sms.sh
-index 51d96bb..47edafe 100644
+index 51d96bb..783035e 100644
 --- a/configs/default_hooks/sxmo_hook_sms.sh
 +++ b/configs/default_hooks/sxmo_hook_sms.sh
 @@ -13,4 +13,7 @@
@@ -83,9 +83,9 @@ index 51d96bb..47edafe 100644
 +# shellcheck source=scripts/core/sxmo_common.sh
 +. sxmo_common.sh
 +
-+mpv --quiet --no-video "$(xdg_data_path sxmo/notify.ogg 1)"
++mpv --quiet --no-video "$(xdg_data_path sxmo/notify.ogg)"
 diff --git a/configs/default_hooks/sxmo_hook_start.sh b/configs/default_hooks/sxmo_hook_start.sh
-index 67a9b14..d657545 100644
+index 67a9b14..dbdda7e 100644
 --- a/configs/default_hooks/sxmo_hook_start.sh
 +++ b/configs/default_hooks/sxmo_hook_start.sh
 @@ -38,7 +38,7 @@ case "$SXMO_WM" in
@@ -93,12 +93,12 @@ index 67a9b14..d657545 100644
  
  		# Set a pretty wallpaper
 -		feh --bg-fill /usr/share/sxmo/background.jpg
-+		feh --bg-fill "$(xdg_data_path sxmo/background.jpg 1)"
++		feh --bg-fill "$(xdg_data_path sxmo/background.jpg)"
  
  		superctl start autocutsel
  		superctl start autocutsel-primary
 diff --git a/configs/profile.d/sxmo_init.sh b/configs/profile.d/sxmo_init.sh
-index 1c342a8..313b945 100644
+index 1c342a8..41ed710 100644
 --- a/configs/profile.d/sxmo_init.sh
 +++ b/configs/profile.d/sxmo_init.sh
 @@ -3,6 +3,8 @@
@@ -123,7 +123,7 @@ index 1c342a8..313b945 100644
  	export SHELL="${SHELL:-/bin/sh}"
  
 -	export PATH="$XDG_CONFIG_HOME/sxmo/hooks/:/usr/share/sxmo/default_hooks/:$PATH"
-+	default_hooks_path=$(xdg_data_path sxmo/default_hooks/ 1)
++	default_hooks_path=$(xdg_data_path sxmo/default_hooks/)
 +	export PATH="$XDG_CONFIG_HOME/sxmo/hooks/:$default_hooks_path:$PATH"
  
  	# The user can already forced a $SXMO_DEVICE_NAME value
@@ -133,13 +133,13 @@ index 1c342a8..313b945 100644
  
  	if [ -n "$SXMO_DEVICE_NAME" ]; then
 -		export PATH="$XDG_CONFIG_HOME/sxmo/hooks/$SXMO_DEVICE_NAME/:/usr/share/sxmo/default_hooks/$SXMO_DEVICE_NAME/:$PATH"
-+		hook_path=$(xdg_data_path sxmo/default_hooks/"${SXMO_DEVICE_NAME}"/ 1)
++		hook_path=$(xdg_data_path sxmo/default_hooks/"${SXMO_DEVICE_NAME}"/)
 +		export PATH="$XDG_CONFIG_HOME/sxmo/hooks/$SXMO_DEVICE_NAME/:$hook_path:$PATH"
  	fi
  }
  
 diff --git a/scripts/appscripts/sxmo_rss.sh b/scripts/appscripts/sxmo_rss.sh
-index 76ec652..f7556cd 100755
+index 76ec652..d4127a1 100755
 --- a/scripts/appscripts/sxmo_rss.sh
 +++ b/scripts/appscripts/sxmo_rss.sh
 @@ -15,7 +15,7 @@ if [ -f "$XDG_CONFIG_HOME/sxmo/sfeedrc" ]; then
@@ -147,12 +147,12 @@ index 76ec652..f7556cd 100755
  	SFEEDCONF="$HOME/.sfeed/sfeedrc"
  else
 -	SFEEDCONF=/usr/share/sxmo/appcfg/sxmo_sfeedrc
-+	SFEEDCONF=$(xdg_data_path sxmo/appcfg/sxmo_sfeedrc 1)
++	SFEEDCONF=$(xdg_data_path sxmo/appcfg/sxmo_sfeedrc)
  fi
  
  die() {
 diff --git a/scripts/appscripts/sxmo_weather.sh b/scripts/appscripts/sxmo_weather.sh
-index 0072150..cc79d2b 100755
+index 0072150..e0d8267 100755
 --- a/scripts/appscripts/sxmo_weather.sh
 +++ b/scripts/appscripts/sxmo_weather.sh
 @@ -6,7 +6,7 @@
@@ -160,39 +160,34 @@ index 0072150..cc79d2b 100755
  . sxmo_common.sh
  
 -[ -z "$SXMO_GPSLOCATIONSFILES" ] && SXMO_GPSLOCATIONSFILES="/usr/share/sxmo/appcfg/places_for_gps.tsv"
-+[ -z "$SXMO_GPSLOCATIONSFILES" ] && SXMO_GPSLOCATIONSFILES="$(xdg_data_path sxmo/appcfg/places_for_gps.tsv 1)"
++[ -z "$SXMO_GPSLOCATIONSFILES" ] && SXMO_GPSLOCATIONSFILES="$(xdg_data_path sxmo/appcfg/places_for_gps.tsv)"
  ROWHOURS=12
  WEATHERXML=""
  
 diff --git a/scripts/core/sxmo_common.sh b/scripts/core/sxmo_common.sh
-index 0a0143d..0cc275f 100644
+index 0a0143d..57002f0 100644
 --- a/scripts/core/sxmo_common.sh
 +++ b/scripts/core/sxmo_common.sh
-@@ -47,3 +47,42 @@ sxmo_log() {
+@@ -47,3 +47,37 @@ sxmo_log() {
  sxmo_debug() {
  	printf "%s %s DEBUG: %s\n" "$(date +%H:%M:%S)" "${0##*/}" "$*" >&2
  }
 +
 +# Outputs the paths of the specified file/dir path in XDG_DATA_DIRS.
-+# Will echo multiple paths if multiple exist.
-+# Can optionally limit number of instances with $2 (0 for no limit)
-+# Can optionally specify a separator character with $3 (default " ")
++# Will output $2 instances (default 1, 0 for no limit)
++# Will separate instances with $3 (default " ")
 +#
-+# xdg_data_path icons/hicolor/icon-theme.cache 1
-+# -> "/var/lib/flatpak/exports/share/icons/hicolor/icon-theme.cache"
++# xdg_data_path icons/open.ico
++# -> "/usr/local/share/icons/open.ico"
 +#
 +# xdg_data_path sxmo/appcfg
 +# -> "/usr/share/sxmo/appcfg"
 +#
-+# xdg_data_path icons
-+# -> "/var/lib/flatpak/exports/share/icons /usr/share/icons"
-+#
 +# xdg_data_path icons 0 "|"
-+# -> "/var/lib/flatpak/exports/share/icons|/usr/share/icons"
-+
++# -> "/usr/local/share/icons|/usr/share/icons"
 +xdg_data_path() {
 +	filepath=$1
-+	instance_count=${2:-0}
++	instance_count=${2:-1}
 +	sep=${3:-" "}
 +
 +	IFS=':'
@@ -212,7 +207,7 @@ index 0a0143d..0cc275f 100644
 +	done
 +}
 diff --git a/scripts/core/sxmo_hookmenu.sh b/scripts/core/sxmo_hookmenu.sh
-index 92c3060..c6e769a 100755
+index 92c3060..ed08a84 100755
 --- a/scripts/core/sxmo_hookmenu.sh
 +++ b/scripts/core/sxmo_hookmenu.sh
 @@ -4,6 +4,7 @@
@@ -228,7 +223,7 @@ index 92c3060..c6e769a 100755
  	file="$(filename "$1")"
  	if [ ! -e "$file" ]; then
 -		cd "/usr/share/sxmo/default_hooks" || return
-+		cd "$(xdg_data_path sxmo/default_hooks 1)" || return
++		cd "$(xdg_data_path sxmo/default_hooks)" || return
  		file="$(find "$SXMO_DEVICE_NAME/" . -name "sxmo_hook_$1.sh" -maxdepth 1 | head -n1)"
  		[ -e "$file" ] && cp "$file" "$XDG_CONFIG_HOME/sxmo/hooks/$file"
  	fi
@@ -237,12 +232,12 @@ index 92c3060..c6e769a 100755
  	fi
  
 -	if cd "/usr/share/sxmo/default_hooks"; then
-+	if cd "$(xdg_data_path sxmo/default_hooks 1)"; then
++	if cd "$(xdg_data_path sxmo/default_hooks)"; then
  		find . "$SXMO_DEVICE_NAME/" -maxdepth 1 \( -type f -o -type l \) -name 'sxmo_hook*.sh' -exec basename {} \; |\
  			sed 's/^sxmo_hook_//g' | sed 's/\.sh$//g' |\
  			sort > "$system"
 diff --git a/scripts/core/sxmo_menumode_toggler.sh b/scripts/core/sxmo_menumode_toggler.sh
-index 3b96898..43cbcdf 100644
+index 3b96898..d70148c 100644
 --- a/scripts/core/sxmo_menumode_toggler.sh
 +++ b/scripts/core/sxmo_menumode_toggler.sh
 @@ -2,6 +2,9 @@
@@ -260,14 +255,14 @@ index 3b96898..43cbcdf 100644
  swaymsg -t subscribe -m "['mode']" | while read -r message; do
  	if printf %s "$message" | grep -q menu; then
 -		setup_xkb /usr/share/sxmo/xkb/xkb_mobile_movement_buttons
-+		setup_xkb "$(xdg_data_path sxmo/xkb/xkb_mobile_movement_buttons 1)"
++		setup_xkb "$(xdg_data_path sxmo/xkb/xkb_mobile_movement_buttons)"
  	else
 -		setup_xkb /usr/share/sxmo/xkb/xkb_mobile_normal_buttons
-+		setup_xkb "$(xdg_data_path sxmo/xkb/xkb_mobile_normal_buttons 1)"
++		setup_xkb "$(xdg_data_path sxmo/xkb/xkb_mobile_normal_buttons)"
  	fi
  done
 diff --git a/scripts/core/sxmo_migrate.sh b/scripts/core/sxmo_migrate.sh
-index c2aaba9..322156d 100644
+index c2aaba9..db64b9d 100644
 --- a/scripts/core/sxmo_migrate.sh
 +++ b/scripts/core/sxmo_migrate.sh
 @@ -171,11 +171,11 @@ checkhooks() {
@@ -275,12 +270,12 @@ index c2aaba9..322156d 100644
  			# We also compare the device user hook to the system
  			# default version
 -			DEFAULT_PATH="/usr/share/sxmo/default_hooks/$SXMO_DEVICE_NAME/:/usr/share/sxmo/default_hooks/"
-+			DEFAULT_PATH="$(xdg_data_path sxmo/default_hooks/"$SXMO_DEVICE_NAME"/ 1):$(xdg_data_path sxmo/default_hooks/ 1)"
++			DEFAULT_PATH="$(xdg_data_path sxmo/default_hooks/"$SXMO_DEVICE_NAME"/):$(xdg_data_path sxmo/default_hooks/)"
  		else
  			# We dont want to compare a default user hook to the device
  			# system version
 -			DEFAULT_PATH="/usr/share/sxmo/default_hooks/"
-+			DEFAULT_PATH="$(xdg_data_path sxmo/default_hooks/ 1)"
++			DEFAULT_PATH="$(xdg_data_path sxmo/default_hooks/)"
  		fi
  
  		if [ "$MODE" = "reset" ]; then
@@ -289,23 +284,23 @@ index c2aaba9..322156d 100644
  
  common() {
 -	defaultconfig /usr/share/sxmo/appcfg/profile_template "$XDG_CONFIG_HOME/sxmo/profile" 644
-+	defaultconfig "$(xdg_data_path sxmo/appcfg/profile_template 1)" "$XDG_CONFIG_HOME/sxmo/profile" 644
++	defaultconfig "$(xdg_data_path sxmo/appcfg/profile_template)" "$XDG_CONFIG_HOME/sxmo/profile" 644
  }
  
  sway() {
 -	defaultconfig /usr/share/sxmo/appcfg/sway_template "$XDG_CONFIG_HOME/sxmo/sway" 644
 -	defaultconfig /usr/share/sxmo/appcfg/foot.ini "$XDG_CONFIG_HOME/foot/foot.ini" 644
 -	defaultconfig /usr/share/sxmo/appcfg/mako.conf "$XDG_CONFIG_HOME/mako/config" 644
-+	defaultconfig "$(xdg_data_path sxmo/appcfg/sway_template 1)" "$XDG_CONFIG_HOME/sxmo/sway" 644
-+	defaultconfig "$(xdg_data_path sxmo/appcfg/foot.ini 1)" "$XDG_CONFIG_HOME/foot/foot.ini" 644
-+	defaultconfig "$(xdg_data_path sxmo/appcfg/mako.conf 1)" "$XDG_CONFIG_HOME/mako/config" 644
++	defaultconfig "$(xdg_data_path sxmo/appcfg/sway_template)" "$XDG_CONFIG_HOME/sxmo/sway" 644
++	defaultconfig "$(xdg_data_path sxmo/appcfg/foot.ini)" "$XDG_CONFIG_HOME/foot/foot.ini" 644
++	defaultconfig "$(xdg_data_path sxmo/appcfg/mako.conf)" "$XDG_CONFIG_HOME/mako/config" 644
  }
  
  xorg() {
 -	defaultconfig /usr/share/sxmo/appcfg/xinit_template "$XDG_CONFIG_HOME/sxmo/xinit" 644
 -	defaultconfig /usr/share/sxmo/appcfg/dunst.conf "$XDG_CONFIG_HOME/dunst/dunstrc" 644
-+	defaultconfig "$(xdg_data_path sxmo/appcfg/xinit_template 1)" "$XDG_CONFIG_HOME/sxmo/xinit" 644
-+	defaultconfig "$(xdg_data_path sxmo/appcfg/dunst.conf 1)" "$XDG_CONFIG_HOME/dunst/dunstrc" 644
++	defaultconfig "$(xdg_data_path sxmo/appcfg/xinit_template)" "$XDG_CONFIG_HOME/sxmo/xinit" 644
++	defaultconfig "$(xdg_data_path sxmo/appcfg/dunst.conf)" "$XDG_CONFIG_HOME/dunst/dunstrc" 644
  }
  
  
@@ -314,7 +309,7 @@ index c2aaba9..322156d 100644
  
  # Execute idempotent migrations
 -find /usr/share/sxmo/migrations -type f | sort -n | tr '\n' '\0' | xargs -0 sh
-+find "$(xdg_data_path sxmo/migrations 1)" -type f | sort -n | tr '\n' '\0' | xargs -0 sh
++find "$(xdg_data_path sxmo/migrations)" -type f | sort -n | tr '\n' '\0' | xargs -0 sh
  
  #modes may be chained
  for MODE in "$@"; do
@@ -332,7 +327,7 @@ index 26b6e6c..8143e71 100755
  debug=
  TERMCMD="${TERMCMD:-st -e}"
 diff --git a/scripts/core/sxmo_swayinitconf.sh b/scripts/core/sxmo_swayinitconf.sh
-index dc0a274..2517e0b 100755
+index dc0a274..598cdae 100755
 --- a/scripts/core/sxmo_swayinitconf.sh
 +++ b/scripts/core/sxmo_swayinitconf.sh
 @@ -17,13 +17,13 @@ swaymsg -- output "$monitor" scale "$scale"
@@ -340,36 +335,36 @@ index dc0a274..2517e0b 100755
  swaymsg -- input "$pwr" repeat_delay 200
  swaymsg -- input "$pwr" repeat_rate 15
 -swaymsg -- input "$pwr" xkb_file /usr/share/sxmo/sway/xkb_mobile_normal_buttons
-+swaymsg -- input "$pwr" xkb_file "$(xdg_data_path sxmo/sway/xkb_mobile_normal_buttons 1)"
++swaymsg -- input "$pwr" xkb_file "$(xdg_data_path sxmo/sway/xkb_mobile_normal_buttons)"
  
  if ! [ "$vols" = "none" ]; then
  	for vol in $vols; do
  		swaymsg -- input "$vol" repeat_delay 200
  		swaymsg -- input "$vol" repeat_rate 15
 -		swaymsg -- input "$vol" xkb_file /usr/share/sxmo/sway/xkb_mobile_normal_buttons
-+		swaymsg -- input "$vol" xkb_file "$(xdg_data_path sxmo/sway/xkb_mobile_normal_buttons 1)"
++		swaymsg -- input "$vol" xkb_file "$(xdg_data_path sxmo/sway/xkb_mobile_normal_buttons)"
  	done
  fi
  
 diff --git a/scripts/core/sxmo_timezonechange.sh b/scripts/core/sxmo_timezonechange.sh
-index 7e4d7a2..e805499 100755
+index 7e4d7a2..659889d 100755
 --- a/scripts/core/sxmo_timezonechange.sh
 +++ b/scripts/core/sxmo_timezonechange.sh
 @@ -25,9 +25,10 @@ change_arch() {
  }
  
  menu() {
-+	zoneinfo_dir=$(xdg_data_path zoneinfo 1)
++	zoneinfo_dir=$(xdg_data_path zoneinfo)
  	T="$(
 -		find /usr/share/zoneinfo -type f |
 -		sed  's#^/usr/share/zoneinfo/##g' |
-+	find "$zoneinfo_dir" -type f |
++		find "$zoneinfo_dir" -type f |
 +		sed  "s#^${zoneinfo_dir}/##g" |
  		sort |
  		sxmo_dmenu_with_kb.sh -p Timezone -i
  	)" || exit 0
 diff --git a/scripts/core/sxmo_version.sh b/scripts/core/sxmo_version.sh
-index 86d72eb..d18a80c 100755
+index 86d72eb..1f2402f 100755
 --- a/scripts/core/sxmo_version.sh
 +++ b/scripts/core/sxmo_version.sh
 @@ -7,7 +7,7 @@
@@ -377,12 +372,12 @@ index 86d72eb..d18a80c 100755
  
  printf "Sxmo "
 -cat /usr/share/sxmo/version
-+cat "$(xdg_data_path sxmo/version 1)"
++cat "$(xdg_data_path sxmo/version)"
  case "$SXMO_WM" in
  	dwm)
  		/usr/bin/dwm -v
 diff --git a/scripts/core/sxmo_wmtoggle.sh b/scripts/core/sxmo_wmtoggle.sh
-index 9af41f0..4b1955c 100644
+index 9af41f0..7a4123a 100644
 --- a/scripts/core/sxmo_wmtoggle.sh
 +++ b/scripts/core/sxmo_wmtoggle.sh
 @@ -2,20 +2,23 @@
@@ -399,22 +394,22 @@ index 9af41f0..4b1955c 100644
  
  case "$(realpath /var/lib/tinydm/default-session.desktop)" in
 -	/usr/share/wayland-sessions/swmo.desktop)
-+	"$(realpath "$(xdg_data_path wayland-sessions/swmo.desktop 1)")")
++	"$(realpath "$(xdg_data_path wayland-sessions/swmo.desktop)")")
  		command -v dwm >/dev/null || not_ready_yet
 -		doas tinydm-set-session -f -s /usr/share/xsessions/sxmo.desktop
-+		doas tinydm-set-session -f -s "$(xdg_data_path xsessions/sxmo.desktop 1)"
++		doas tinydm-set-session -f -s "$(xdg_data_path xsessions/sxmo.desktop)"
  		pkill sway
  		;;
 -	/usr/share/xsessions/sxmo.desktop)
-+	"$(realpath "$(xdg_data_path xsessions/sxmo.desktop 1)")")
++	"$(realpath "$(xdg_data_path xsessions/sxmo.desktop)")")
  		command -v sway >/dev/null || not_ready_yet
 -		doas tinydm-set-session -f -s /usr/share/wayland-sessions/swmo.desktop
-+		doas tinydm-set-session -f -s "$(xdg_data_path wayland-sessions/swmo.desktop 1)"
++		doas tinydm-set-session -f -s "$(xdg_data_path wayland-sessions/swmo.desktop)"
  		pkill dwm
  		;;
  esac
 diff --git a/scripts/core/sxmo_xinit.sh b/scripts/core/sxmo_xinit.sh
-index d002fc3..1607556 100755
+index d002fc3..45ca350 100755
 --- a/scripts/core/sxmo_xinit.sh
 +++ b/scripts/core/sxmo_xinit.sh
 @@ -4,6 +4,7 @@
@@ -430,11 +425,11 @@ index d002fc3..1607556 100755
  
  defaults() {
 -	xmodmap /usr/share/sxmo/appcfg/xmodmap_caps_esc
-+	xmodmap "$(xdg_data_path sxmo/appcfg/xmodmap_caps_esc 1)"
++	xmodmap "$(xdg_data_path sxmo/appcfg/xmodmap_caps_esc)"
  	xsetroot -mod 29 29 -fg '#0b3a4c' -bg '#082430'
  	xset s off -dpms
 -	for xr in /usr/share/sxmo/appcfg/*.xr; do
-+	for xr in "$(xdg_data_path sxmo/appcfg 1)"/*.xr; do
++	for xr in "$(xdg_data_path sxmo/appcfg)"/*.xr; do
  		xrdb -merge "$xr"
  	done
  	[ -e "$HOME"/.Xresources ] && xrdb -merge "$HOME"/.Xresources
