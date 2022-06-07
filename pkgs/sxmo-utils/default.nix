@@ -17,6 +17,7 @@ stdenv.mkDerivation rec {
     ./002-use-systemctl-poweroff.patch    # normal 'poweroff' doesn't seem to work
     ./003-repoint-config-paths.patch
     ./004-modem-use-coreutils-date.patch # See https://todo.sr.ht/~mil/sxmo-tickets/446
+    ./005-coreutils-aliases.patch        # aliases to force coreutils over busybox when needed
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];
@@ -76,19 +77,6 @@ stdenv.mkDerivation rec {
     ${find_replace_with_trailing "/usr/bin/" ""}
     sed -i "s|/bin/chgrp|${pkgs.coreutils}/bin/chgrp|g" configs/udev/90-sxmo.rules
     sed -i "s|/bin/chmod|${pkgs.coreutils}/bin/chmod|g" configs/udev/90-sxmo.rules
-
-    # replace some commands that need coreutils things that busybox does not have
-    # depending on system config, they might be calling into busybox and that will break.
-    # TODO: use aliases in sxmo_common.sh instead
-    ${find_replace "realpath" "${pkgs.coreutils}/bin/realpath"}
-    ${find_replace "stat --printf" "${pkgs.coreutils}/bin/stat --printf"}
-
-    # 'busybox rfkill' isn't working for us, while util-linux is
-    # TODO: use aliases in sxmo_common.sh instead
-    ${find_replace "busybox rfkill" "rfkill"}
-    ${find_replace "rfkill list" "${pkgs.util-linux}/bin/rfkill list"}
-    ${find_replace "rfkill block" "${pkgs.util-linux}/bin/rfkill block"}
-    ${find_replace "rfkill unblock" "${pkgs.util-linux}/bin/rfkill unblock"}
   '';
 
   meta = with lib; {

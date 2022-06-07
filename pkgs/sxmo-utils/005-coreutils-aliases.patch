@@ -1,0 +1,31 @@
+diff --git a/scripts/core/sxmo_common.sh b/scripts/core/sxmo_common.sh
+index 57002f0..4f1bac4 100644
+--- a/scripts/core/sxmo_common.sh
++++ b/scripts/core/sxmo_common.sh
+@@ -30,9 +30,11 @@ alias more="busybox more"
+ alias netstat="busybox netstat"
+ alias tail="busybox tail"
+ alias xargs="busybox xargs"
+-alias rfkill="busybox rfkill"
++alias rfkill="rfkill"
+ alias flock="busybox flock"
+ alias sed="busybox sed"
++alias realpath="coreutils --coreutils-prog=realpath"
++alias stat="coreutils --coreutils-prog=stat"
+ 
+ confirm_menu() {
+ 	printf "No\nYes\n" | \
+diff --git a/scripts/core/sxmo_uniq_exec.sh b/scripts/core/sxmo_uniq_exec.sh
+index 1618a1c..435dee0 100644
+--- a/scripts/core/sxmo_uniq_exec.sh
++++ b/scripts/core/sxmo_uniq_exec.sh
+@@ -2,6 +2,9 @@
+ # SPDX-License-Identifier: AGPL-3.0-only
+ # Copyright 2022 Sxmo Contributors
+ 
++# shellcheck source=scripts/core/sxmo_common.sh
++. sxmo_common.sh
++
+ mkdir -p "$XDG_RUNTIME_DIR/sxmo.flock"
+ LOCKER="$XDG_RUNTIME_DIR/sxmo.flock/$(realpath "$1" | sed 's|/|-|g').lock"
+ 
