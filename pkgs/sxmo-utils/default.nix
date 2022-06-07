@@ -41,44 +41,10 @@ stdenv.mkDerivation rec {
     rmdir $out/usr/
   '';
 
-  postPatch =
-  let
-    # SXMO loves hardcoded paths, and it would be painful to make patches for everything.
-    # We need to use lots of sed.
-    #
-    # To keep substitutions reliable, we only replace when the thing we want to
-    # replace is prefixed with whitespace or start-of-line,
-    # and suffixed with whitespace or end-of-line.
-    # we make exceptions for ([{}])=":<>& chars
-    #
-    # We also ignore commented lines (this is important to avoid unnecessary migrations by the user)
-    #
-    # For example with from=stat and to=otherstat:
-    # * won't replace 'netstat' with 'netotherstat',
-    # * won't replace '/foo/stat' with '/foo/otherstat'
-    # * won't replace statfoo with 'otherstatfoo'
-    # * won't replace $stat with '$otherstat'
-    # * will replace ' stat thing' with ' otherstat thing'
-    # * will replace 'stat thing' with 'otherstat thing'
-    # * will replace '(stat thing' with '(otherstat thing'
-    # * will replace 'thing stat)' with 'thing otherstat)'
-    #
-    # the _with_trailing functions don't perform the suffix check,
-    # so you can replace the prefix portion of paths.
-    sep = ''\|'';
-    permittedSymbols = ''\(${sep}\[${sep}\{${sep}=${sep}\"${sep}\)${sep}\]${sep}\:${sep}\}${sep}\'${sep}\>${sep}\s+${sep}\&'';
-    prefixCheck = ''(^${sep}${permittedSymbols})'';
-    suffixCheck = ''($\|${permittedSymbols})'';
-    beforeReplace = ''h;s/[^#]*//1;x;s/#.*//;''; # For ignoring comments
-    afterReplace = '';G;s/(.*)\n/\1/'';          # for ignoring comments
-    sed_replace = from: to: ''sed -E -i "${beforeReplace}s|${prefixCheck}${from}${suffixCheck}|\1${to}\2|g${afterReplace}"'';
-    sed_replace_with_trailing = from: to: ''sed -E -i "${beforeReplace}s|${prefixCheck}${from}|\1${to}|g${afterReplace}"'';
-    find_replace = from: to: ''find . -type f ! -name Makefile -exec ${sed_replace from to} {} +'';
-    find_replace_with_trailing = from: to: ''find . -type f ! -name Makefile -exec ${sed_replace_with_trailing from to} {} +'';
-  in
-  ''
-    # fix hardcoded paths
-    ${find_replace_with_trailing "/usr/bin/" ""}
+  postPatch = ''
+    # Sxmo references /usr/bin/ directly in a number of places. We can just
+    # chop it off and everything will be found via $PATH
+    find . -type f -exec sed -E -i "s|/usr/bin/||g" {} +
     sed -i "s|/bin/chgrp|${pkgs.coreutils}/bin/chgrp|g" configs/udev/90-sxmo.rules
     sed -i "s|/bin/chmod|${pkgs.coreutils}/bin/chmod|g" configs/udev/90-sxmo.rules
   '';
