@@ -12,12 +12,13 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    ./000-paths.patch # replaces /usr/share with $XDG_DATA_DIRS usage
-    ./001-fix-makefile-appscript-symlinks.patch
-    ./002-use-systemctl-poweroff.patch    # normal 'poweroff' doesn't seem to work
-    ./003-repoint-config-paths.patch
-    ./004-modem-use-coreutils-date.patch # See https://todo.sr.ht/~mil/sxmo-tickets/446
-    ./005-coreutils-aliases.patch        # aliases to force coreutils over busybox when needed
+    ./000-paths.patch # [upstreamable?] Replaces /usr/share with $XDG_DATA_DIRS usage
+    ./001-fix-makefile-appscript-symlinks.patch # [upstreamable?] Makefile should use DESTDIR for this
+    ./002-use-systemctl-poweroff.patch   # Normal 'poweroff' doesn't seem to work
+    ./003-repoint-config-paths.patch     # Configs can reference data through /run/current-system/sw/share/
+    ./004-modem-use-coreutils-date.patch # [fix for upstream issue] https://todo.sr.ht/~mil/sxmo-tickets/446
+    ./005-coreutils-aliases.patch        # Aliases to force coreutils over busybox when needed
+    ./006-sxmo_init_use_PATH.patch       # Reference sxmo_init.sh via $PATH, not /etc/profile.d
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];
@@ -29,6 +30,10 @@ stdenv.mkDerivation rec {
     make install OPENRC=0 DESTDIR=$out PREFIX=""
     mkdir -p $out/lib/udev
     mv $out/usr/lib/udev/rules.d $out/lib/udev/
+
+    # Sxmo references sxmo_init.sh through /etc/profile. We symlink to bin so
+    # sxmo can find it via $PATH
+    ln -s $out/etc/profile.d/sxmo_init.sh $out/bin/sxmo_init.sh
 
     # Clean up empty directories
     rmdir $out/usr/lib/udev/
@@ -73,7 +78,6 @@ stdenv.mkDerivation rec {
   in
   ''
     # fix hardcoded paths
-    ${find_replace_with_trailing "/etc/profile.d" "$out/share/sxmo/profile.d"}
     ${find_replace_with_trailing "/usr/bin/" ""}
     sed -i "s|/bin/chgrp|${pkgs.coreutils}/bin/chgrp|g" configs/udev/90-sxmo.rules
     sed -i "s|/bin/chmod|${pkgs.coreutils}/bin/chmod|g" configs/udev/90-sxmo.rules
