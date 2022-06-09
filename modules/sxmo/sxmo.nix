@@ -3,6 +3,7 @@
 let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
   sxmoutils = (sxmopkgs.sxmo-utils.overrideAttrs (oldAttrs: rec { passthru.providedSessions = [ "sxmo" ]; }));
+  dmcfg = config.services.xserver.desktopManager;
 in
 {
   imports = [ ./common.nix ];
@@ -31,6 +32,8 @@ in
      dunst
      gnome-icon-theme  # dunst needs these
      sxmopkgs.sxmo-st
+   ] ++ lib.optionals dmcfg.sxmo.installScriptDeps [
+     scrot
    ];
 
    # Define session
