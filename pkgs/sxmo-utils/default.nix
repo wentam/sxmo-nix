@@ -12,13 +12,14 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    ./000-paths.patch # [upstreamable?] Replaces /usr/share with $XDG_DATA_DIRS usage
-    ./001-fix-makefile-appscript-symlinks.patch # [upstreamable?] Makefile should use DESTDIR for this
+    ./000-paths.patch # [upstreamable] Replaces /usr/share with $XDG_DATA_DIRS usage
+    ./001-fix-makefile-appscript-symlinks.patch # [upstreamable] Makefile should use DESTDIR for this
     ./002-use-systemctl-poweroff.patch   # Normal 'poweroff' doesn't seem to work
     ./003-repoint-config-paths.patch     # Configs can reference data through /run/current-system/sw/share/
     ./004-modem-use-coreutils-date.patch # [fix for upstream issue] https://todo.sr.ht/~mil/sxmo-tickets/446
-    ./005-coreutils-aliases.patch        # Aliases to force coreutils over busybox when needed
+    ./005-coreutils-aliases.patch        # [fix for upstream issue] Aliases to force coreutils over busybox when needed
     ./006-sxmo_init_use_PATH.patch       # Reference sxmo_init.sh via $PATH, not /etc/profile.d
+    ./007-sxmo-OS-branches.patch         # [upstreamable] Sxmo branches on $OS for things like upgrading packages
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];

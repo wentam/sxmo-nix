@@ -117,6 +117,7 @@ in
      permit nopass :wheel as root cmd systemctl args stop eg25-manager
      permit nopass :wheel as root cmd systemctl args start ModemManager
      permit nopass :wheel as root cmd systemctl args stop ModemManager
+     permit setenv { NIX_PATH } :wheel as root cmd nohup args nixos-rebuild switch --upgrade
     '';
     security.doas.enable = true;
 
