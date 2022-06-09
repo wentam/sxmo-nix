@@ -44,12 +44,12 @@ in
       sxiv
       mediainfo
     ] ++ lib.optionals dmcfg.sxmo.mms.enable [
-      sxmopkgs.mmsd-tng 
+      sxmopkgs.mmsd-tng
     ] ++ lib.optionals config.sound.enable [
       callaudiod
-      mpv # used to play system sounds 
+      mpv # used to play system sounds
     ] ++ lib.optionals config.hardware.pulseaudio.enable [
-      pamixer  
+      pamixer
     ];
 
     # Install udev rules
