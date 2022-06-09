@@ -25,11 +25,8 @@ in
     environment.systemPackages = with pkgs; [
       libnotify
       inotify-tools
-      (lib.mkIf config.sound.enable mpv) # used to play system sounds
-      (lib.mkIf config.hardware.pulseaudio.enable pamixer)
       xdg-user-dirs
       autocutsel
-      (lib.mkIf config.sound.enable callaudiod)
       light # for adjusting backlight
       sxmopkgs.sxmo-utils
       sxmopkgs.superd
@@ -38,22 +35,21 @@ in
       pn
       gojq
       doas
-      sxmopkgs.mnc      # for scheduling suspend wakeups for cron
-      (
-        lib.mkIf 
-        dmcfg.sxmo.mms.enable
-        sxmopkgs.mmsd-tng
-      ) # for MMS
-      (
-        lib.mkIf
-        dmcfg.sxmo.installScriptDeps
-        sfeed
-      )
-      (
-        lib.mkIf
-        dmcfg.sxmo.installScriptDeps
-        sxmopkgs.codemadness-frontends
-      )
+      sxmopkgs.mnc # for scheduling suspend wakeups for cron
+    ] ++ lib.optionals dmcfg.sxmo.installScriptDeps [
+      sxmopkgs.codemadness-frontends
+      sfeed
+      libxml2
+      youtube-dl
+      sxiv
+      mediainfo
+    ] ++ lib.optionals dmcfg.sxmo.mms.enable [
+      sxmopkgs.mmsd-tng 
+    ] ++ lib.optionals config.sound.enable [
+      callaudiod
+      mpv # used to play system sounds 
+    ] ++ lib.optionals config.hardware.pulseaudio.enable [
+      pamixer  
     ];
 
     # Install udev rules

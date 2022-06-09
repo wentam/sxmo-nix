@@ -3,6 +3,7 @@
 let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
   sxmoutils = (sxmopkgs.sxmo-utils.overrideAttrs (oldAttrs: rec { passthru.providedSessions = [ "swmo" ]; }));
+  dmcfg = config.services.xserver.desktopManager;
 in
 {
   imports = [ ./common.nix ];
@@ -26,6 +27,9 @@ in
      mako
      sxmopkgs.wayout
      foot
+   ] ++ lib.optionals dmcfg.sxmo.installScriptDeps [
+     grim
+     slurp
    ];
 
    programs.sway = {
