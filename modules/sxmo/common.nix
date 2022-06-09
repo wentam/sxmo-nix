@@ -49,6 +49,11 @@ in
         dmcfg.sxmo.installScriptDeps
         sfeed
       )
+      (
+        lib.mkIf
+        dmcfg.sxmo.installScriptDeps
+        sxmopkgs.codemadness-frontends
+      )
     ];
 
     # Install udev rules

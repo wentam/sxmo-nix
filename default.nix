@@ -15,4 +15,5 @@ rec {
   wayout      = pkgs.callPackage ./pkgs/wayout {};
   mnc         = pkgs.callPackage ./pkgs/mnc {};
   mmsd-tng    = pkgs.callPackage ./pkgs/mmsd-tng {};
+  codemadness-frontends = pkgs.callPackage ./pkgs/codemadness-frontends {};
 }

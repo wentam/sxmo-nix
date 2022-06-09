@@ -1,0 +1,13 @@
+diff --git a/Makefile b/Makefile
+index 57e590b..8ebaf27 100644
+--- a/Makefile
++++ b/Makefile
+@@ -10,7 +10,7 @@ FRONTENDS_CFLAGS = -I../ -I. ${CFLAGS}
+ FRONTENDS_CPPFLAGS = ${CPPFLAGS}
+ FRONTENDS_LDFLAGS = ${LDFLAGS}
+ LIBTLS_LDFLAGS = -ltls
+-LIBTLS_LDFLAGS_STATIC = -ltls -lssl -lcrypto -static
++LIBTLS_LDFLAGS_STATIC = -ltls -lssl -lcrypto
+ 
+ # Linux
+ #FRONTENDS_CFLAGS = -I../ -I. -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 ${CFLAGS}
