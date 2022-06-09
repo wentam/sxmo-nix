@@ -4,8 +4,7 @@ let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
   dmcfg = config.services.xserver.desktopManager;
 in
-  {
-
+{
   options = {
     services.xserver.desktopManager.sxmo.mms = {
       enable = lib.mkOption {
@@ -20,54 +19,49 @@ in
       description = "Puts the dependencies needed for sxmo's builtin scripts into environment.systemPackages.";
     };
   };
+
   config = lib.mkIf (config.services.xserver.desktopManager.swmo.enable || 
                      config.services.xserver.desktopManager.sxmo.enable) {
     environment.systemPackages = with pkgs; [
-      libnotify
+      libnotify     # For sending desktop notifications
       inotify-tools
-      xdg-user-dirs
-      autocutsel
-      light # for adjusting backlight
-      sxmopkgs.sxmo-utils
-      sxmopkgs.superd
-      busybox
-      lisgd
-      pn
-      gojq
-      doas
-      sxmopkgs.mnc # for scheduling suspend wakeups for cron
+      xdg-user-dirs # Used for xdg-user-dirs-update to create XDG user
+                    # directories such as ~/Pictures
+
+      light         # Used to adjust backlight
+      sxmopkgs.sxmo-utils # Sxmo's main repo
+      sxmopkgs.superd     # Sxmo manages it's services with superd
+      busybox      # Sxmo sometimes uses busybox directly with 'busybox [thing]'
+      lisgd        # Sxmo's gesture daemon
+      pn           # Phone number parsing/formatting/validation
+      gojq         # Used for parsing purposes throughout sxmo
+      doas         # Used to run certain commands with root privileges
+      sxmopkgs.mnc # Used to schedule suspend wakeups for cron
     ] ++ lib.optionals dmcfg.sxmo.installScriptDeps [
-      sxmopkgs.codemadness-frontends
-      sfeed
-      libxml2
-      youtube-dl
-      sxiv
-      mediainfo
+      sxmopkgs.codemadness-frontends # reddit-cli and youtube-cli for sxmo_[reddit|youtube].sh
+      sfeed      # For sxmo_rss.sh
+      libxml2    # For sxmo_weather.sh
+      youtube-dl # For sxmo_youtube.sh
+      sxiv       # To view images with the file browser and sxmo_open.sh
+      mediainfo  # For sxmo_record.sh
     ] ++ lib.optionals dmcfg.sxmo.mms.enable [
-      sxmopkgs.mmsd-tng
+      sxmopkgs.mmsd-tng # For MMS support
     ] ++ lib.optionals config.sound.enable [
-      callaudiod
-      mpv # used to play system sounds
+      callaudiod # For phone call audio routing
+      mpv        # Used to play system sounds (notification ding etc)
     ] ++ lib.optionals config.hardware.pulseaudio.enable [
-      pamixer
+      pamixer # Used to adjust volume if you're running pulseaudio
     ];
 
-    # Install udev rules
-    services.udev.packages = [ sxmopkgs.sxmo-utils ];
-
-    # We need nerdfonts for all of sxmo's icons to work.
-    fonts.fonts = [ pkgs.nerdfonts ];
-
-    powerManagement.enable = lib.mkDefault true;
-
-    # TODO: We currently need this for sxmo to find it's hooks/superd services,
-    # and for the user's local configuration to reference sxmo things without
-    # needing to migrate for every nix store path change.
-    #
-    # I don't see any easy way around it, but it'd be nice if it wasn't necessary 
-    environment.pathsToLink = [ "/share" ];
-
+    services.udev.packages = [ sxmopkgs.sxmo-utils ];  # Install udev rules
+    fonts.fonts = [ pkgs.nerdfonts ];                  # Sxmo uses nerdfonts for it's icons
+    powerManagement.enable = lib.mkDefault true;       # For suspend
     services.xserver.libinput.enable = lib.mkDefault true;
+
+    # Needed for sxmo to find it's hooks/superd services, and for the user's
+    # local sxmo configuration to reference resources without needing to migrate
+    # for every single nix store path change.
+    environment.pathsToLink = [ "/share" ];
 
     # For sxmo scripts to work over ssh etc, we need these vars defined
     environment.variables.XDG_CONFIG_HOME = lib.mkDefault "$HOME/.config";
@@ -81,7 +75,7 @@ in
     ];
 
     # Power button shouldn't immediately power off the device
-    # TODO: This change could apply to other sessions. It'd better find a way to do this at session start.
+    # (sxmo uses it for menus etc)
     services.logind.extraConfig = lib.mkDefault ''
        HandlePowerKey=ignore
     '';
@@ -92,17 +86,10 @@ in
     #
     # As such, we maintain it here.
     #
-    # Note: this allows *any wheel user* to run these commands as root without a password.
-    # This isn't too bad, because generally it's intended that wheel users have access
-    # to the root account in some way.
-    #
-    # TODO: this requires that the sxmo user be in wheel.
-    # This means, for example, that any non-wheel user can't shut down the device or toggle wifi.
-    # It may be better to split this up into more specific groups, perhaps:
-    # sessionctl,rfctl,powerctl
-    #
-    # Downside is that this would need to be specifically documented for any users of the module,
-    # as these groups are not a standard sxmo thing.
+    # Note: this allows *any wheel user* to run the commands prefixed with 'nopass' here
+    # as root without a password. This isn't too bad, because generally it's intended
+    # that wheel users have access to the root account in some way.
+    security.doas.enable = true;
     security.doas.extraConfig = ''
      permit persist :wheel
      permit nopass :wheel as root cmd busybox args poweroff
@@ -120,17 +107,14 @@ in
      permit nopass :wheel as root cmd systemctl args stop ModemManager
      permit setenv { NIX_PATH } :wheel as root cmd nohup args nixos-rebuild switch --upgrade
     '';
-    security.doas.enable = true;
 
-    # sxmo uses rtcwake to suspend the system, we need
+    # Sxmo uses rtcwake to suspend the system, we need
     # setuid to give it access
-    # TODO: maybe better to require a 'suspend' group?
     security.wrappers."rtcwake" = {
       setuid = true;
       source = "${pkgs.util-linux}/bin/rtcwake";
       owner  = "root";
       group  = "wheel";
     };
-
   };
 }

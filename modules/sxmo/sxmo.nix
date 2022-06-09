@@ -19,6 +19,7 @@ in
 
  config = lib.mkIf config.services.xserver.desktopManager.sxmo.enable {
    environment.systemPackages = with pkgs; [
+     autocutsel # sxmo runs this to keep the cutbuffer and clipboard in sync
      sxmopkgs.sxmo-dwm
      sxmopkgs.sxmo-dmenu
      svkbd
