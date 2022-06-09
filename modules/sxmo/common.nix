@@ -37,6 +37,11 @@ in
       gojq         # Used for parsing purposes throughout sxmo
       doas         # Used to run certain commands with root privileges
       sxmopkgs.mnc # Used to schedule suspend wakeups for cron
+      lsof
+      bc
+      dbus         # dbus-run-session
+      file
+      curl
     ] ++ lib.optionals dmcfg.sxmo.installScriptDeps [
       sxmopkgs.codemadness-frontends # reddit-cli and youtube-cli for sxmo_[reddit|youtube].sh
       sfeed      # For sxmo_rss.sh
@@ -44,9 +49,11 @@ in
       youtube-dl # For sxmo_youtube.sh
       sxiv       # To view images with the file browser and sxmo_open.sh
       mediainfo  # For sxmo_record.sh
+      gawk
     ] ++ lib.optionals dmcfg.sxmo.mms.enable [
       sxmopkgs.mmsd-tng # For MMS support
     ] ++ lib.optionals config.sound.enable [
+      alsaUtils
       callaudiod # For phone call audio routing
       mpv        # Used to play system sounds (notification ding etc)
     ] ++ lib.optionals config.hardware.pulseaudio.enable [

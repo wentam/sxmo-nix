@@ -33,6 +33,8 @@ in
      dunst
      gnome-icon-theme  # dunst needs these
      sxmopkgs.sxmo-st
+     xsel
+     xclip
    ] ++ lib.optionals dmcfg.sxmo.installScriptDeps [
      scrot
    ];
