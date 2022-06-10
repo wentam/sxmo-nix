@@ -5,9 +5,6 @@ with lib;
 let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
   dmcfg = config.services.xserver.displayManager;
-  tinydm-run = pkgs.writeText "tinydm-run-session-wrapper.sh" ''
-    exec ${sxmopkgs.tinydm}/bin/tinydm-run-session
-  '';
   xsession_path = "${dmcfg.sessionData.desktops}/share/xsessions/";
   wsession_path = "${dmcfg.sessionData.desktops}/share/wayland-sessions/";
 in
@@ -103,7 +100,7 @@ in
    systemd.services.display-manager.serviceConfig.RestartSec = lib.mkOverride 10 3;
 
    services.xserver.displayManager.job.execCmd = ''
-     exec ${sxmopkgs.autologin}/bin/autologin ${dmcfg.autoLogin.user} /run/current-system/sw/bin/sh ${tinydm-run}
+     exec ${sxmopkgs.autologin}/bin/autologin ${dmcfg.autoLogin.user} ${sxmopkgs.tinydm}/bin/tinydm-run-session
    '';
  };
 }
