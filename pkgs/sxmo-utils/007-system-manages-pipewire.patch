@@ -1,0 +1,15 @@
+diff --git a/configs/default_hooks/sxmo_hook_start.sh b/configs/default_hooks/sxmo_hook_start.sh
+index dbdda7e..1161581 100644
+--- a/configs/default_hooks/sxmo_hook_start.sh
++++ b/configs/default_hooks/sxmo_hook_start.sh
+@@ -75,10 +75,6 @@ superctl start sxmo_notificationmonitor
+ # To setup initial lock state
+ sxmo_hook_unlock.sh
+ 
+-superctl start pipewire
+-superctl start pipewire-pulse
+-superctl start wireplumber
+-
+ # Verify modemmanager and eg25-manager are running
+ if ! sxmo_modemdaemons.sh status; then
+ 	sxmo_notify_user.sh --urgency=critical "Warning! Modem daemons are not running."

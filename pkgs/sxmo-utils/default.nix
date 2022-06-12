@@ -19,6 +19,7 @@ stdenv.mkDerivation rec {
     ./004-coreutils-aliases.patch        # [fix for upstream issue] Aliases to force coreutils over busybox when needed
     ./005-sxmo_init_use_PATH.patch       # Reference sxmo_init.sh via $PATH, not /etc/profile.d
     ./006-sxmo-OS-branches.patch         # [upstreamable] Sxmo branches on $OS for things like upgrading packages
+    ./007-system-manages-pipewire.patch
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];

@@ -52,11 +52,11 @@ in
       gawk
     ] ++ lib.optionals dmcfg.sxmo.mms.enable [
       sxmopkgs.mmsd-tng # For MMS support
-    ] ++ lib.optionals config.sound.enable [
+    ] ++ lib.optionals (config.sound.enable || config.services.pipewire.enable) [
       alsaUtils
       callaudiod # For phone call audio routing
       mpv        # Used to play system sounds (notification ding etc)
-    ] ++ lib.optionals config.hardware.pulseaudio.enable [
+    ] ++ lib.optionals (config.hardware.pulseaudio.enable || config.services.pipewire.enable) [
       pamixer # Used to adjust volume if you're running pulseaudio
     ];
 
