@@ -8,6 +8,8 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ libressl glibc ];
 
+  makeFlags = [ "RANLIB=${stdenv.cc.targetPrefix}ranlib" ];
+
   src = fetchurl {
     url = "https://www.codemadness.org/releases/frontends/frontends-${version}.tar.gz";
     sha256 = "sha256-8NKSfyIMSzaWTgIkFdcPTX/ECeQiasZPfZG1Ft/LOUw=";
