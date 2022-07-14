@@ -65,10 +65,10 @@ index 3824a51..4ef20db 100755
  	arch|archarm) update_pacman;;
 +	nixos) update_nixos;;
  esac
-diff --git a/scripts/modem/sxmo_modemdaemons.sh b/scripts/modem/sxmo_modemdaemons.sh
+diff --git a/configs/default_hooks/sxmo_hook_restart_modem_daemons.sh b/configs/default_hooks/sxmo_hook_restart_modem_daemons.sh
 index 7e567f3..58ffce5 100755
---- a/scripts/modem/sxmo_modemdaemons.sh
-+++ b/scripts/modem/sxmo_modemdaemons.sh
+--- a/configs/default_hooks/sxmo_hook_restart_modem_daemons.sh
++++ b/configs/default_hooks/sxmo_hook_restart_modem_daemons.sh
 @@ -21,7 +21,7 @@ daemon_start() {
  		alpine|postmarketos)
  			doas rc-service "$1" start

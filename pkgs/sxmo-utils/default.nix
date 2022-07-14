@@ -3,16 +3,15 @@
 stdenv.mkDerivation rec {
   pname = "sxmo-utils";
   #version = "1.9.0";
-  version = "d6a6fc2c4767a49e8fd1be7293c2bbd47da3f811";
+  version = "35737a6483b7a7f5b7552a400e3be93e5074cea3";
 
   src = fetchgit {
     url = "https://git.sr.ht/~mil/sxmo-utils";
     rev = version;
-    sha256 = "sha256-cuG4/hhi98+UFBI/lKwlKkz0vqlKtqR8G1vmHKMs1zE=";
+    sha256 = "sha256-9fA01UxJwvsmZc1FfPAmTrXji708+t7zSTGvuzu1zqw=";
   };
 
   patches = [
-    ./000-paths.patch # [upstreamable] Replaces /usr/share with $XDG_DATA_DIRS usage
     ./001-fix-makefile-appscript-symlinks.patch # [upstreamable] Makefile should use DESTDIR for this
     ./002-use-systemctl-poweroff.patch   # Normal 'poweroff' doesn't seem to work
     ./003-repoint-config-paths.patch     # Configs can reference data through /run/current-system/sw/share/
