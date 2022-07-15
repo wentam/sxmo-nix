@@ -3,22 +3,22 @@
 stdenv.mkDerivation rec {
   pname = "sxmo-utils";
   #version = "1.9.0";
-  version = "35737a6483b7a7f5b7552a400e3be93e5074cea3";
+  version = "0e2c352842833a7dc44f8d26410675a2e4829e85";
 
   src = fetchgit {
     url = "https://git.sr.ht/~mil/sxmo-utils";
     rev = version;
-    sha256 = "sha256-9fA01UxJwvsmZc1FfPAmTrXji708+t7zSTGvuzu1zqw=";
+    sha256 = "sha256-YXAKmUYdkdUyiHqtBMPAhA5UwGFAYffiDhaZVjSxiW0=";
   };
 
   patches = [
-    ./001-fix-makefile-appscript-symlinks.patch # [upstreamable] Makefile should use DESTDIR for this
+    ./000-old-bemenu-compat.patch # To be removed when this is merged: https://github.com/NixOS/nixpkgs/pull/180440
+    ./001-fix-makefile-appscript-symlinks.patch
     ./002-use-systemctl-poweroff.patch   # Normal 'poweroff' doesn't seem to work
     ./003-repoint-config-paths.patch     # Configs can reference data through /run/current-system/sw/share/
-    ./004-coreutils-aliases.patch        # [fix for upstream issue] Aliases to force coreutils over busybox when needed
+    ./004-coreutils-aliases.patch        # Aliases to force coreutils over busybox when needed
     ./005-sxmo_init_use_PATH.patch       # Reference sxmo_init.sh via $PATH, not /etc/profile.d
-    ./006-sxmo-OS-branches.patch         # [upstreamable] Sxmo branches on $OS for things like upgrading packages
-    ./007-system-manages-pipewire.patch
+    ./006-system-manages-pipewire.patch
   ];
 
   passthru.providedSessions = [ "swmo" "sxmo" ];

@@ -1,13 +1,13 @@
 diff --git a/Makefile b/Makefile
-index 2b1fd33..4da6bd5 100644
+index 3c47028..e7fc460 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -75,7 +75,7 @@ install: $(PROGRAMS)
+@@ -81,7 +81,7 @@ install-scripts: $(PROGRAMS)
  
  	# Appscripts
  	mkdir -p "$(DESTDIR)$(PREFIX)/share/sxmo/appscripts"
 -	cd scripts/appscripts && find . -name 'sxmo_*.sh' | xargs -I{} ln -fs "$(PREFIX)/bin/{}" "$(DESTDIR)$(PREFIX)/share/sxmo/appscripts/{}" && cd ../..
-+	cd scripts/appscripts && find . -name 'sxmo_*.sh' | xargs -I{} ln -fs "$(DESTDIR)/bin/{}" "$(DESTDIR)$(PREFIX)/share/sxmo/appscripts/{}" && cd ../..
++	cd scripts/appscripts && find . -name 'sxmo_*.sh' | xargs -I{} ln -fs "$(DESTDIR)$(PREFIX)/bin/{}" "$(DESTDIR)$(PREFIX)/share/sxmo/appscripts/{}" && cd ../..
  
  
  	mkdir -p "$(DESTDIR)$(PREFIX)/share/superd/services"
