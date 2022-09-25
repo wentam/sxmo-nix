@@ -1,0 +1,50 @@
+diff --git a/configs/appcfg/profile_template b/configs/appcfg/profile_template
+index be2b579..b34ba76 100644
+--- a/configs/appcfg/profile_template
++++ b/configs/appcfg/profile_template
+@@ -1,5 +1,8 @@
+ #!/bin/sh
+ 
++# shellcheck source=scripts/core/sxmo_common.sh
++. sxmo_common.sh
++
+ # Please modify this file to your liking
+ 
+ # Important Instructions:
+@@ -31,7 +34,7 @@ command -v firefox >/dev/null && export BROWSER=firefox
+ #export DMENU_WRAP_AROUND=1
+ 
+ # Enable audio feedback on keypress
+-#export KEYBOARD_ARGS="-o | clickclack -f /usr/share/sxmo/keytap.wav"
++#export KEYBOARD_ARGS="-o | clickclack -f $(xdg_data_path sxmo/keytap.wav)"
+ 
+ # Or, enable vibration feedback on keypress
+ #export KEYBOARD_ARGS="-o | clickclack -V"
+@@ -48,10 +51,10 @@ case "$SXMO_WM" in
+ esac
+ 
+ #Set RINGTONE to audio file to play for incoming call
+-export SXMO_RINGTONE="/usr/share/sxmo/ring.ogg"
++export SXMO_RINGTONE="$(xdg_data_path sxmo/ring.ogg)"
+ 
+ #Set TEXTSOUND to audio file to play when received text message
+-export SXMO_TEXTSOUND="/usr/share/sxmo/notify.ogg"
++export SXMO_TEXTSOUND="$(xdg_data_path sxmo/notify.ogg)"
+ 
+ #Set RINGTIME to number of seconds the phone will ring
+ export SXMO_RINGTIME=20
+diff --git a/configs/default_hooks/sxmo_hook_contextmenu.sh b/configs/default_hooks/sxmo_hook_contextmenu.sh
+index 1e8676e..1fd7ad7 100644
+--- a/configs/default_hooks/sxmo_hook_contextmenu.sh
++++ b/configs/default_hooks/sxmo_hook_contextmenu.sh
+@@ -124,8 +124,8 @@ case "$WMCLASS" in
+ 			$icon_lck Lock (Screen off)  ^ 0 ^ sxmo_hook_screenoff.sh
+ 			$icon_zzz Suspend            ^ 0 ^ sxmo_hook_screenoff.sh && sxmo_suspend.sh
+ 			$icon_out Logout             ^ 0 ^ confirm Logout && (pkill dwm || swaymsg exit)
+-			$([ -f /usr/share/xsessions/sxmo.desktop ] &&
+-				[ -f /usr/share/wayland-sessions/swmo.desktop ] &&
++			$([ -f "$(xdg_data_path xsessions/sxmo.desktop)" ] &&
++				[ -f "$(xdg_data_path wayland-sessions/swmo.desktop)" ] &&
+ 				echo "$icon_rol Toggle WM ^ 0 ^ confirm Toggle && sxmo_wmtoggle.sh"
+ 			)
+ 			$icon_rld Reboot             ^ 0 ^ confirm Reboot && sxmo_power.sh reboot

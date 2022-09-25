@@ -1,0 +1,13 @@
+diff --git a/configs/default_hooks/sxmo_hook_statusbar.sh b/configs/default_hooks/sxmo_hook_statusbar.sh
+index 9c3496a..4e6f541 100644
+--- a/configs/default_hooks/sxmo_hook_statusbar.sh
++++ b/configs/default_hooks/sxmo_hook_statusbar.sh
+@@ -105,7 +105,7 @@ _modem() {
+ 				# FAILED, UNKNOWN
+ 				# see https://www.freedesktop.org/software/ModemManager/doc/latest/ModemManager/ModemManager-Flags-and-Enumerations.html#MMModemState
+ 				sxmo_log "WARNING: MODEMSTATUS: $MODEMSTATUS"
+-				printf "<%s>" "$MODEMSTATUS"
++				printf "%s" "$MODEMSTATUS"
+ 				;;
+ 		esac
+ 	fi

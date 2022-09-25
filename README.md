@@ -1,6 +1,6 @@
 # sxmo-nix
 
-Packaging sxmo/swmo for nixOS with a goal of upstreaming to nixpkgs.
+Packaging Sxmo/Swmo for NixOS with a goal of upstreaming to nixpkgs.
 
 See also: https://git.sr.ht/~noneucat/nur-packages
 
@@ -36,3 +36,9 @@ See also: https://git.sr.ht/~noneucat/nur-packages
 
 # Debugging tips
 * If you're using tinydm, ~/.local/state/tinydm.log contains sxmo's output
+
+# Donations
+Much of my time is volunteered towards open-source projects to improve the free software ecosystem
+for all.
+
+[You can support my work here](https://liberapay.com/wentam) :+1:.

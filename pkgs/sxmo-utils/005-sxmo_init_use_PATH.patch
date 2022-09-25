@@ -25,28 +25,28 @@ index 4e7dd65..7f0e71b 100644
  . sxmo_common.sh
  
 diff --git a/scripts/core/sxmo_winit.sh b/scripts/core/sxmo_winit.sh
-index 921d65b..25dee90 100644
+index 74ecaa3..bf30792 100644
 --- a/scripts/core/sxmo_winit.sh
 +++ b/scripts/core/sxmo_winit.sh
-@@ -3,7 +3,7 @@
- # Copyright 2022 Sxmo Contributors
+@@ -40,7 +40,7 @@ cleanup() {
  
- # shellcheck source=scripts/core/sxmo_common.sh
--. /etc/profile.d/sxmo_init.sh
-+. sxmo_init.sh
+ init() {
+ 	# shellcheck source=/dev/null
+-	. /etc/profile.d/sxmo_init.sh
++	. sxmo_init.sh
  
- envvars() {
- 	export SXMO_WM=sway
+ 	_sxmo_load_environments
+ 	_sxmo_prepare_dirs
 diff --git a/scripts/core/sxmo_xinit.sh b/scripts/core/sxmo_xinit.sh
-index 45ca350..de6ca18 100755
+index 6f95f5b..a9d9181 100755
 --- a/scripts/core/sxmo_xinit.sh
 +++ b/scripts/core/sxmo_xinit.sh
-@@ -3,7 +3,7 @@
- # Copyright 2022 Sxmo Contributors
+@@ -65,7 +65,7 @@ cleanup() {
  
- # shellcheck source=scripts/core/sxmo_common.sh
--. /etc/profile.d/sxmo_init.sh
-+. sxmo_init.sh
- . sxmo_common.sh
+ init() {
+ 	# shellcheck source=/dev/null
+-	. /etc/profile.d/sxmo_init.sh
++	. sxmo_init.sh
  
- envvars() {
+ 	_sxmo_load_environments
+ 	_sxmo_prepare_dirs
