@@ -25,7 +25,7 @@ in
      swayidle
      wob
      mako
-     sxmopkgs.wayout
+     sxmopkgs.proycon-wayout
      foot
    ] ++ lib.optionals dmcfg.sxmo.installScriptDeps [
      grim

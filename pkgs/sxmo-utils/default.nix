@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
     ./001-fix-makefile-appscript-symlinks.patch
     ./002-use-systemctl-poweroff.patch   # Normal 'poweroff' doesn't seem to work
     ./003-repoint-config-paths.patch     # Configs can reference data through /run/current-system/sw/share/
-    ./004-coreutils-aliases.patch        # Aliases to force coreutils over busybox when needed
+    ./004-aliases.patch        # Aliases to force coreutils over busybox when needed
     ./005-sxmo_init_use_PATH.patch       # Reference sxmo_init.sh via $PATH, not /etc/profile.d
     ./006-system-manages-pipewire.patch
     ./007-xdg-data-path.patch            # Fix hardcoded /usr/share refs. Submitted to sxmo-utils.

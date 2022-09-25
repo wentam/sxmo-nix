@@ -12,7 +12,7 @@ rec {
   superd      = pkgs.callPackage ./pkgs/superd {};
   tinydm      = pkgs.callPackage ./pkgs/tinydm {};
   autologin   = pkgs.callPackage ./pkgs/autologin {};
-  wayout      = pkgs.callPackage ./pkgs/wayout {};
+  proycon-wayout = pkgs.callPackage ./pkgs/proycon-wayout {};
   mnc         = pkgs.callPackage ./pkgs/mnc {};
   mmsd-tng    = pkgs.callPackage ./pkgs/mmsd-tng {};
   codemadness-frontends = pkgs.callPackage ./pkgs/codemadness-frontends {};

@@ -2,7 +2,7 @@ diff --git a/scripts/core/sxmo_common.sh b/scripts/core/sxmo_common.sh
 index 57002f0..4f1bac4 100644
 --- a/scripts/core/sxmo_common.sh
 +++ b/scripts/core/sxmo_common.sh
-@@ -30,9 +30,13 @@ alias more="busybox more"
+@@ -30,9 +30,14 @@ alias more="busybox more"
  alias netstat="busybox netstat"
  alias tail="busybox tail"
  alias xargs="busybox xargs"
@@ -14,6 +14,7 @@ index 57002f0..4f1bac4 100644
 +alias stat="coreutils --coreutils-prog=stat"
 +alias mktemp="coreutils --coreutils-prog=mktemp"
 +alias date="coreutils --coreutils-prog=date"
++alias wayout="proycon-wayout"
  
  confirm_menu() {
  	printf "No\nYes\n" | \
