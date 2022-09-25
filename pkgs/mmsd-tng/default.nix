@@ -5,7 +5,7 @@
   meson,
   ninja,
   mobile-broadband-provider-info,
-  pkgconfig,
+  pkg-config,
   glib,
   modemmanager,
   libsoup,
@@ -28,7 +28,7 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-IK3MU/sKHQLoCvnzjm1cyk3Gv00VKL04gTlN8hzxXNA=";
   };
 
-  nativeBuildInputs = [ meson pkgconfig ninja ];
+  nativeBuildInputs = [ meson pkg-config ninja ];
   buildInputs = [ mobile-broadband-provider-info glib modemmanager libsoup c-ares libphonenumber protobuf dbus json_c ];
 
   configurePhase = ''

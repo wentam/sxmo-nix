@@ -53,7 +53,7 @@ in
     ] ++ lib.optionals dmcfg.sxmo.mms.enable [
       sxmopkgs.mmsd-tng # For MMS support
     ] ++ lib.optionals (config.sound.enable || config.services.pipewire.enable) [
-      alsaUtils
+      alsa-utils
       callaudiod # For phone call audio routing
       mpv        # Used to play system sounds (notification ding etc)
     ] ++ lib.optionals (config.hardware.pulseaudio.enable || config.services.pipewire.enable) [
