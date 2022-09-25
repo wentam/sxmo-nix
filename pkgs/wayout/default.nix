@@ -14,7 +14,7 @@
 }:
 
 stdenv.mkDerivation rec {
-  pname = "wayout";
+  pname = "proycon-wayout";
   version = "0.1.2";
 
   src = fetchFromSourcehut {
@@ -28,10 +28,14 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ scdoc ninja meson cmake pkg-config wayland-scanner ];
   buildInputs = [ wayland-protocols wayland cairo pango wayland-scanner ];
 
-  patches = [ ./remove-werror.patch ];
+  fixupPhase = ''
+    mv $out/bin/wayout $out/bin/proycon-wayout # avoid conflict with shinyzenith/wayout
+  '';
+
+  patches = [ ./remove-werror.patch ]; # Build fails with -Werror
 
   meta = with lib; {
-    description = "Takes text from standard input and outputs it to a desktop-widget on Wayland desktops. ";
+    description = "Takes text from standard input and outputs it to a desktop-widget on Wayland desktops.";
     homepage = "https://git.sr.ht/~proycon/wayout";
     license = licenses.gpl3;
     platforms = platforms.linux;
