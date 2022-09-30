@@ -18,6 +18,11 @@ in
       default = true;
       description = "Puts the dependencies needed for sxmo's builtin scripts into environment.systemPackages.";
     };
+    services.xserver.desktopManager.sxmo.package = lib.mkOption {
+      type = lib.types.package;
+      default = sxmopkgs.sxmo-utils;
+      description = "sxmo-utils package to use";
+    };
   };
 
   config = lib.mkIf (config.services.xserver.desktopManager.swmo.enable || 
@@ -29,7 +34,7 @@ in
                     # directories such as ~/Pictures
 
       light         # Used to adjust backlight
-      sxmopkgs.sxmo-utils # Sxmo's main repo
+      dmcfg.sxmo.package # Sxmo's main repo
       sxmopkgs.superd     # Sxmo manages it's services with superd
       busybox      # Sxmo sometimes uses busybox directly with 'busybox [thing]'
       lisgd        # Sxmo's gesture daemon
@@ -60,7 +65,7 @@ in
       pamixer # Used to adjust volume if you're running pulseaudio
     ];
 
-    services.udev.packages = [ sxmopkgs.sxmo-utils ];  # Install udev rules
+    services.udev.packages = [ dmcfg.sxmo.package ];  # Install udev rules
     fonts.fonts = [ pkgs.nerdfonts ];                  # Sxmo uses nerdfonts for it's icons
     powerManagement.enable = lib.mkDefault true;       # For suspend
     services.xserver.libinput.enable = lib.mkDefault true;
@@ -78,7 +83,7 @@ in
     environment.variables.PATH = [
       "${config.environment.variables.XDG_BIN_HOME}"
       "${config.environment.variables.XDG_CONFIG_HOME}/sxmo/hooks/"
-      "${sxmopkgs.sxmo-utils}/share/sxmo/default_hooks/"
+      "${dmcfg.sxmo.package}/share/sxmo/default_hooks/"
     ];
 
     # Power button shouldn't immediately power off the device

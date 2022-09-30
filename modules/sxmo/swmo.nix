@@ -2,8 +2,8 @@
 
 let
   sxmopkgs = import ../../default.nix { inherit pkgs; };
-  sxmoutils = (sxmopkgs.sxmo-utils.overrideAttrs (oldAttrs: rec { passthru.providedSessions = [ "swmo" ]; }));
   dmcfg = config.services.xserver.desktopManager;
+  sxmoutils = (dmcfg.sxmo.package.overrideAttrs (oldAttrs: rec { passthru.providedSessions = [ "swmo" ]; }));
 in
 {
   imports = [ ./common.nix ];
