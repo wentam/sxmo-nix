@@ -47,6 +47,7 @@ in
       dbus         # dbus-run-session
       file
       curl
+      sxmopkgs.vvmd # Visual voice mail
     ] ++ lib.optionals dmcfg.sxmo.installScriptDeps [
       sxmopkgs.codemadness-frontends # reddit-cli and youtube-cli for sxmo_[reddit|youtube].sh
       sfeed      # For sxmo_rss.sh

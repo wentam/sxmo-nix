@@ -16,4 +16,5 @@ rec {
   mnc         = pkgs.callPackage ./pkgs/mnc {};
   mmsd-tng    = pkgs.callPackage ./pkgs/mmsd-tng {};
   codemadness-frontends = pkgs.callPackage ./pkgs/codemadness-frontends {};
+  vvmd        = pkgs.callPackage ./pkgs/vvmd {};
 }
