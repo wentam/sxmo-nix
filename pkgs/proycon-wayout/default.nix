@@ -15,13 +15,13 @@
 
 stdenv.mkDerivation rec {
   pname = "proycon-wayout";
-  version = "0.1.2";
+  version = "0.1.3";
 
   src = fetchFromSourcehut {
     owner = "~proycon";
     repo = "wayout";
     rev = version;
-    sha256 = "sha256-gbsAGpo4c/p8Ad2iF7dsDKjCsF2tZJxwr/ncWSNNyqQ=";
+    sha256 = "sha256-pxHz8y63xX9I425OG0jPvQVx4mAbTYHxVMMkfjZpURo=";
   };
 
   depsBuildBuild = [ pkg-config ];
