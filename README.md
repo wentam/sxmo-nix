@@ -2,7 +2,9 @@
 
 Packaging Sxmo/Swmo for NixOS with a goal of upstreaming to nixpkgs.
 
-See also: https://git.sr.ht/~noneucat/nur-packages
+See also: 
+* https://git.sr.ht/~noneucat/nur-packages
+* https://github.com/chuangzhu/nixpkgs-sxmo
 
 # Usage
 
