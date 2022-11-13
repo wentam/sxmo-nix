@@ -5,7 +5,6 @@ rec {
   modules = import ./modules; # NixOS modules
   overlays = import ./overlays; # nixpkgs overlays
 
-  sxmo-utils  = pkgs.callPackage ./pkgs/sxmo-utils {};
   sxmo-dwm    = pkgs.callPackage ./pkgs/sxmo-dwm {};
   sxmo-st     = pkgs.callPackage ./pkgs/sxmo-st {};
   sxmo-dmenu  = pkgs.callPackage ./pkgs/sxmo-dmenu {};
@@ -17,4 +16,16 @@ rec {
   mmsd-tng    = pkgs.callPackage ./pkgs/mmsd-tng {};
   codemadness-frontends = pkgs.callPackage ./pkgs/codemadness-frontends {};
   vvmd        = pkgs.callPackage ./pkgs/vvmd {};
+  sxmo-utils  = pkgs.callPackage ./pkgs/sxmo-utils {
+    inherit
+      codemadness-frontends
+      mmsd-tng
+      mnc
+      superd
+      vvmd
+      sxmo-dwm
+      sxmo-dmenu
+      sxmo-st
+    ;
+  };
 }

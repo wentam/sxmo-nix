@@ -13,6 +13,13 @@ in
         description = "Enables MMS support within sxmo/swmo (installs mmsd-tng)";
       };
     };
+    services.xserver.desktopManager.sxmo = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "";
+      };
+    };
     services.xserver.desktopManager.sxmo.installScriptDeps = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -25,46 +32,8 @@ in
     };
   };
 
-  config = lib.mkIf (config.services.xserver.desktopManager.swmo.enable || 
-                     config.services.xserver.desktopManager.sxmo.enable) {
-    environment.systemPackages = with pkgs; [
-      libnotify     # For sending desktop notifications
-      inotify-tools
-      xdg-user-dirs # Used for xdg-user-dirs-update to create XDG user
-                    # directories such as ~/Pictures
-
-      light         # Used to adjust backlight
-      dmcfg.sxmo.package # Sxmo's main repo
-      sxmopkgs.superd     # Sxmo manages it's services with superd
-      busybox      # Sxmo sometimes uses busybox directly with 'busybox [thing]'
-      lisgd        # Sxmo's gesture daemon
-      pn           # Phone number parsing/formatting/validation
-      gojq         # Used for parsing purposes throughout sxmo
-      doas         # Used to run certain commands with root privileges
-      sxmopkgs.mnc # Used to schedule suspend wakeups for cron
-      lsof
-      bc
-      dbus         # dbus-run-session
-      file
-      curl
-      sxmopkgs.vvmd # Visual voice mail
-    ] ++ lib.optionals dmcfg.sxmo.installScriptDeps [
-      sxmopkgs.codemadness-frontends # reddit-cli and youtube-cli for sxmo_[reddit|youtube].sh
-      sfeed      # For sxmo_rss.sh
-      libxml2    # For sxmo_weather.sh
-      youtube-dl # For sxmo_youtube.sh
-      sxiv       # To view images with the file browser and sxmo_open.sh
-      mediainfo  # For sxmo_record.sh
-      gawk
-    ] ++ lib.optionals dmcfg.sxmo.mms.enable [
-      sxmopkgs.mmsd-tng # For MMS support
-    ] ++ lib.optionals (config.sound.enable || config.services.pipewire.enable) [
-      alsa-utils
-      callaudiod # For phone call audio routing
-      mpv        # Used to play system sounds (notification ding etc)
-    ] ++ lib.optionals (config.hardware.pulseaudio.enable || config.services.pipewire.enable) [
-      pamixer # Used to adjust volume if you're running pulseaudio
-    ];
+  config = lib.mkIf config.services.xserver.desktopManager.sxmo.enable {
+    environment.systemPackages = [ dmcfg.sxmo.package sxmopkgs.superd ];
 
     services.udev.packages = [ dmcfg.sxmo.package ];  # Install udev rules
     fonts.fonts = [ pkgs.nerdfonts ];                  # Sxmo uses nerdfonts for it's icons
@@ -76,16 +45,7 @@ in
     # for every single nix store path change.
     environment.pathsToLink = [ "/share" ];
 
-    # For sxmo scripts to work over ssh etc, we need these vars defined
-    environment.variables.XDG_CONFIG_HOME = lib.mkDefault "$HOME/.config";
-    environment.variables.XDG_DATA_HOME   = lib.mkDefault "$HOME/.local/share";
-    environment.variables.XDG_CACHE_HOME  = lib.mkDefault "$HOME/.cache";
-    environment.variables.XDG_BIN_HOME    = lib.mkDefault "$HOME/.local/bin";
-    environment.variables.PATH = [
-      "${config.environment.variables.XDG_BIN_HOME}"
-      "${config.environment.variables.XDG_CONFIG_HOME}/sxmo/hooks/"
-      "${dmcfg.sxmo.package}/share/sxmo/default_hooks/"
-    ];
+    services.xserver.displayManager.sessionPackages = [ dmcfg.sxmo.package ];
 
     # Power button shouldn't immediately power off the device
     # (sxmo uses it for menus etc)
