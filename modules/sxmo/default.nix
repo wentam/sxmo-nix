@@ -6,24 +6,12 @@ let
 in
 {
   options = {
-    services.xserver.desktopManager.sxmo.mms = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Enables MMS support within sxmo/swmo (installs mmsd-tng)";
-      };
-    };
     services.xserver.desktopManager.sxmo = {
       enable = lib.mkOption {
         type = lib.types.bool;
         default = false;
         description = "";
       };
-    };
-    services.xserver.desktopManager.sxmo.installScriptDeps = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Puts the dependencies needed for sxmo's builtin scripts into environment.systemPackages.";
     };
     services.xserver.desktopManager.sxmo.package = lib.mkOption {
       type = lib.types.package;
