@@ -2,7 +2,7 @@
 
 Packaging Sxmo/Swmo for NixOS with a goal of upstreaming to nixpkgs.
 
-See also: 
+See also:
 * https://git.sr.ht/~noneucat/nur-packages
 * https://github.com/chuangzhu/nixpkgs-sxmo
 
@@ -11,15 +11,13 @@ See also:
 ```nix
 {
   imports = [
-    ./sxmo-nix/modules/sxmo/swmo.nix #
     ./sxmo-nix/modules/sxmo/sxmo.nix #
     ./sxmo-nix/modules/tinydm        # Or wherever they're located
   ];
 
   services.xserver = {
     enable = true;
-    desktopManager.swmo.enable = true; # Wayland
-    desktopManager.sxmo.enable = true; # X11
+    desktopManager.sxmo.enable = true;
 
     displayManager = {
       tinydm.enable = true;    # power->toggle WM in sxmo only works with tinytm
