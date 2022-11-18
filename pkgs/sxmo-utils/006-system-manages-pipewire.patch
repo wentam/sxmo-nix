@@ -1,15 +1,16 @@
 diff --git a/configs/default_hooks/sxmo_hook_start.sh b/configs/default_hooks/sxmo_hook_start.sh
-index ff4bcd2..6c0fac3 100644
+index 94255f9..d23ca6f 100755
 --- a/configs/default_hooks/sxmo_hook_start.sh
 +++ b/configs/default_hooks/sxmo_hook_start.sh
-@@ -75,10 +75,6 @@ superctl start sxmo_notificationmonitor
- # To setup initial lock state
- sxmo_hook_unlock.sh
+@@ -20,11 +20,6 @@ while ! superctl status > /dev/null 2>&1; do
+ 	sleep 0.1
+ done
  
--superctl start pipewire
+-# Load our sound daemons
+-# pipewire-pulse will start pipewire
 -superctl start pipewire-pulse
 -superctl start wireplumber
 -
- (
- 	sleep 5 # let some time to pipewire
- 	superctl start callaudiod
+ # mako/dunst are required for warnings.
+ # load some other little things here too.
+ case "$SXMO_WM" in

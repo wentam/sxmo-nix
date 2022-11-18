@@ -74,22 +74,19 @@ stdenv.mkDerivation rec {
   # Important: When updating version, grep for /usr/share in sxmo-utils. All instances should be
   # replaced with uses of the xdg_data_path function in sxmo_common.sh, and the devs often forget
   # this. Use your patch here, but also submit your patch to sxmo-utils.
-  version = "1.11.1";
+  version = "1.12.0";
 
   src = fetchFromSourcehut {
     owner = "~mil";
     repo = "sxmo-utils";
     rev = version;
-    sha256 = "sha256-uV5+erJCe7JmJhKnJF5IQ2kBX6WNxYJRXLo7MBkE0fk=";
+    sha256 = "sha256-JoOJyoVpSK1iDekaRvltVT6AEi87ZSUDaCidF5tYXlI=";
   };
 
   patches = [
     ./001-fix-makefile-appscript-symlinks.patch
     ./003-repoint-config-paths.patch     # Configs can reference data through /run/current-system/sw/share/
     ./006-system-manages-pipewire.patch  # Sxmo trying to manage pipewire conflicts with system.
-
-    ./007-xdg-data-path.patch            # Fix hardcoded /usr/share refs. Submitted to sxmo-utils. remove after next update
-    ./008-fix-status-bar.patch           # Fix for bug specific to current release, remove after next update
   ];
 
   passthru.providedSessions = lib.optionals x11Support [ "sxmo" ]
