@@ -57,6 +57,7 @@ in
      permit nopass :wheel as root cmd busybox args reboot
      permit nopass :wheel as root cmd poweroff
      permit nopass :wheel as root cmd systemctl args poweroff
+     permit nopass :wheel as root cmd rtcwake
      permit nopass :wheel as root cmd reboot
      permit nopass :wheel as root cmd sxmo_wifitoggle.sh
      permit nopass :wheel as root cmd sxmo_bluetoothtoggle.sh

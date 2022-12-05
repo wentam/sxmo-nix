@@ -229,6 +229,11 @@ stdenv.mkDerivation rec {
     substituteInPlace scripts/core/sxmo_power.sh \
       --replace "doas poweroff" "doas systemctl poweroff"
 
+    # rtcwake needs elevated permissions, use doas rather than setuid to avoid the need to reference
+    # the NixOS-only /run/wrappers/bin path.
+    substituteInPlace configs/default_hooks/sxmo_hook_suspend.sh \
+      --replace "rtcwake" "doas rtcwake"
+
     # sxmo hardcodes path to sxmo_init.sh, repoint
     substituteInPlace \
       scripts/core/sxmo_winit.sh \
